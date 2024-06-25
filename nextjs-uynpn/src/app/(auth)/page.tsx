@@ -1,4 +1,5 @@
 "use client";
+import { Typography } from "@mui/material";
 import "./styles.css";
 import Link from "next/link";
  
