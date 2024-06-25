@@ -1,0 +1,32 @@
+body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+
+.header{
+    margin-top: 800px;
+}
+  
+.label-input{
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.input-auth{
+    margin-bottom: 24px;
+}
+
+.input-auth::placeholder{
+    color: red;
+}
+
+.button-auth{
+    height: 50px;
+}
+
+.forgot-password-span{
+    color: red;
+}
+
+.banner-auth{
+    position: fixed;
+}
