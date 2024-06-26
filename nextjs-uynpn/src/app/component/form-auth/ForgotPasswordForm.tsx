@@ -21,7 +21,6 @@ const ForgotPasswordForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = data => {
-    console.log(data)
     dispatch(sendRequest());
     setTimeout(() => {
       dispatch(requestSuccess());
@@ -52,7 +51,7 @@ const ForgotPasswordForm = () => {
       <Typography
         variant="h5"
         sx={{
-          mb: 2,
+          mb: 2, 
           fontSize: 16,
           textAlign: 'center'
         }}
