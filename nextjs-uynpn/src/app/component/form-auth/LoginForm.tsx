@@ -19,7 +19,9 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.login.isLoading);
 
-  const { handleSubmit, control, formState: { errors } } = useForm<LoginFormInputs>();
+  const { handleSubmit, control, formState: { errors, isValid, isSubmitting } } = useForm<LoginFormInputs>({
+    mode: 'onChange',
+  });
 
   const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
     dispatch(sendRequest());
@@ -130,7 +132,7 @@ const LoginForm = () => {
           color="primary"
           type="submit"
           fullWidth
-          disabled={isLoading} 
+          disabled={!isValid || isSubmitting || isLoading}
           sx={{
             color: '#FFFFFF',
             backgroundColor: '#66BB6A',

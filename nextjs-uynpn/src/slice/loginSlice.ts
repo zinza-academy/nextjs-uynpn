@@ -17,7 +17,7 @@ const loginSlice = createSlice({
     },
     requestSuccess: (state) => {
       state.isLoading = false;
-    },
+    }, 
   },
 });
 
