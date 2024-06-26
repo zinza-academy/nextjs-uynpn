@@ -136,7 +136,7 @@ const LoginForm = () => {
           color="primary"
           type="submit"
           fullWidth
-          disabled={isSubmitDisabled || isLoading} // Disable nút khi không hợp lệ hoặc đang loading
+          disabled={isSubmitDisabled || isLoading} 
           sx={{
             color: '#FFFFFF',
             backgroundColor: '#66BB6A',
@@ -153,7 +153,7 @@ const LoginForm = () => {
       </Grid>
 
       <Grid item>
-        <Typography variant="h5" sx={{ fontSize: 16, textAlign: 'center', fontWeight: 'bold' }}>
+        <Typography variant="h5" sx={{ fontSize: 16, textAlign: 'center' }}>
           Hoặc đăng ký tài khoản, nếu bạn chưa đăng ký!
         </Typography>
       </Grid>
