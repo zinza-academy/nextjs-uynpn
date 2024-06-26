@@ -1,58 +1,27 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation'; // Đổi từ 'next/router' sang 'next/navigation'
+import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
 import { requestSuccess, sendRequest } from '@/slice/forgotPasswordSlice';
+import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import '@/styles/app.css';
+
+interface LoginFormInputs {
+  email: string;
+  password: string;
+}
 
 const LoginForm = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.login.isLoading);
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const { handleSubmit, control, formState: { errors } } = useForm<LoginFormInputs>();
 
-  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true);
-
-  const [touchedEmail, setTouchedEmail] = useState(false);
-  const [touchedPassword, setTouchedPassword] = useState(false);
-
-  useEffect(() => {
-    validateForm(email, password);
-  }, [email, password]);
-
-  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setEmail(value);
-  };
-
-  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setPassword(value);
-  };
-
-  const handleBlur = (field: string) => {
-    if (field === 'email') {
-      setTouchedEmail(true);
-    } else if (field === 'password') {
-      setTouchedPassword(true);
-    }
-  };
-
-  const validateForm = (email: string, password: string) => {
-    if (email.trim() !== '' && password.trim() !== '') {
-      setIsSubmitDisabled(false);
-    } else {
-      setIsSubmitDisabled(true);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
     dispatch(sendRequest());
     setTimeout(() => {
       dispatch(requestSuccess());
@@ -74,7 +43,7 @@ const LoginForm = () => {
       marginLeft={10}
       marginRight={10}
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       spacing={2}
       direction="column"
       alignItems="center"
@@ -91,16 +60,28 @@ const LoginForm = () => {
         <Typography className='label-input' variant="body1">
           Email
         </Typography>
-        <TextField
-          className='input-auth'
-          placeholder='Email'
-          type="email"
-          fullWidth
-          error={touchedEmail && email.trim() === ''}
-          helperText={touchedEmail && email.trim() === '' ? 'Email không được để trống' : ''}
-          value={email}
-          onChange={handleEmailChange}
-          onBlur={() => handleBlur('email')}
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          rules={{
+            required: 'Email không được để trống',
+            pattern: {
+              value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+              message: 'Email không hợp lệ',
+            },
+          }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className='input-auth'
+              placeholder='Email'
+              type="email"
+              fullWidth
+              error={!!errors.email}
+              helperText={errors.email ? errors.email.message : ''}
+            />
+          )}
         />
       </Grid>
 
@@ -108,16 +89,29 @@ const LoginForm = () => {
         <Typography className='label-input' variant="body1">
           Mật khẩu
         </Typography>
-        <TextField
-          className='input-auth'
-          placeholder='Mật khẩu'
-          type="password"
-          fullWidth
-          error={touchedPassword && password.trim() === ''}
-          helperText={touchedPassword && password.trim() === '' ? 'Mật khẩu không được để trống' : ''}
-          value={password}
-          onChange={handlePasswordChange}
-          onBlur={() => handleBlur('password')}
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          rules={{
+            required: 'Mật khẩu không được để trống',
+            minLength: {
+              value: 8,
+              message: 'Mật khẩu phải có ít nhất 8 ký tự',
+            },
+            validate: value => !/\s/.test(value) || 'Mật khẩu không được chứa dấu cách'
+          }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              className='input-auth'
+              placeholder='Mật khẩu'
+              type="password"
+              fullWidth
+              error={!!errors.password}
+              helperText={errors.password ? errors.password.message : ''}
+            />
+          )}
         />
       </Grid>
 
@@ -136,7 +130,7 @@ const LoginForm = () => {
           color="primary"
           type="submit"
           fullWidth
-          disabled={isSubmitDisabled || isLoading} 
+          disabled={isLoading} 
           sx={{
             color: '#FFFFFF',
             backgroundColor: '#66BB6A',
@@ -178,7 +172,6 @@ const LoginForm = () => {
           {isLoading ? 'Đang đăng ký...' : 'Đăng ký'}
         </Button>
       </Grid>
-
     </Grid>
   );
 };
