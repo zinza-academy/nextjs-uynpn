@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,12 +23,32 @@ const LoginForm = () => {
     mode: 'onChange',
   });
 
-  const onSubmit: SubmitHandler<LoginFormInputs> = (data) => {
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const fakeEmail = 'uynpham@gmail.com';
+  const fakePassword = '123uynpham';
+
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     dispatch(sendRequest());
-    setTimeout(() => {
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        setTimeout(() => {
+          if (data.email === fakeEmail && data.password === fakePassword) {
+            resolve();
+          } else {
+            reject(new Error('Sai email hoặc mật khẩu'));
+          }
+        }, 1000);
+      });
+    } catch (error: any) {
+      setServerError(error.message);
       dispatch(requestSuccess());
-      router.push('/dashboard');
-    }, 2000);
+      return;
+    }
+
+    dispatch(requestSuccess());
+    router.push('/dashboard');
   };
 
   const onForgotPassword = () => {
@@ -147,6 +167,14 @@ const LoginForm = () => {
           {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
         </Button>
       </Grid>
+
+      {serverError && (
+        <Grid item sx={{ width: '100%', mb: 1 }}>
+          <Typography variant="body2" color="error" sx={{ textAlign: 'center' }}>
+            {serverError}
+          </Typography>
+        </Grid>
+      )}
 
       <Grid item>
         <Typography variant="h5" sx={{ fontSize: 16, textAlign: 'center' }}>
