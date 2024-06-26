@@ -1,23 +1,27 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Box, Button, TextField, Typography, colors } from '@mui/material';
+import React from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { requestSuccess, sendRequest } from '@/slice/forgotPasswordSlice';
 import { RootState } from '@/lib/store';
-import '@/styles/app.css'
+import '@/styles/app.css';
+
+type FormValues = {
+  email: string;
+};
 
 const ForgotPasswordForm = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.forgotPassword.isLoading);
 
-  const [email, setEmail] = useState('');
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit: SubmitHandler<FormValues> = data => {
+    console.log(data)
     dispatch(sendRequest());
     setTimeout(() => {
       dispatch(requestSuccess());
@@ -29,16 +33,10 @@ const ForgotPasswordForm = () => {
     router.push('/login');
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setEmail(value);
-    setIsButtonDisabled(value === '');
-  };
-
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         display: 'flex',
         flexDirection: 'column',
@@ -56,7 +54,7 @@ const ForgotPasswordForm = () => {
         sx={{
           mb: 2,
           fontSize: 16,
-          textAlign: 'center',
+          textAlign: 'center'
         }}
       >
         Để khôi phục mật khẩu, vui lòng nhập đúng email bạn đã dùng để đăng ký <span className='forgot-password-span'>(*)</span>
@@ -64,11 +62,11 @@ const ForgotPasswordForm = () => {
       <TextField
         className='label-input'
         label="Email"
-        type="email"
+        type="email" 
         fullWidth
         required
-        value={email}
-        onChange={handleEmailChange}
+        {...register('email', { required: 'Email is required' })}
+        error={!!errors.email}
       />
       <Box sx={{ textAlign: 'center' }}>
         <Button
@@ -92,7 +90,7 @@ const ForgotPasswordForm = () => {
           variant="contained"
           color="primary"
           type="submit"
-          disabled={isButtonDisabled || isLoading}
+          disabled={isLoading}
           sx={{
             color: '#FFFFFF',
             backgroundColor: '#303F9F',
