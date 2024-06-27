@@ -55,7 +55,7 @@ const LoginForm = () => {
     
     alert("Đăng nhập thành công");
     dispatch(requestSuccess());
-    router.push('/dashboard');
+    router.push('/dashboard/homepage');
   };
 
   const onForgotPassword = () => {
