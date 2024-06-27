@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface LoginState {
   isLoading: boolean;
   token: string | null;
-}
+} 
 
 const initialState: LoginState = {
   isLoading: false,

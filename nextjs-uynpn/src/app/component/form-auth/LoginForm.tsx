@@ -1,32 +1,51 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/lib/store';
-import { requestSuccess, sendRequest } from '@/slice/forgotPasswordSlice';
-import { useForm, Controller, SubmitHandler } from 'react-hook-form';
-import { setToken } from '@/slice/loginSlice';
-import '@/styles/app.css';
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import React, { useState } from "react";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
+import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { requestSuccess, sendRequest } from "@/slice/forgotPasswordSlice";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { setToken } from "@/slice/loginSlice";
+import "@/styles/app.css";
 
 interface LoginFormInputs {
   email: string;
   password: string;
 }
 
-const fakeToken = 'abc123fakeToken456xyz';
+const fakeToken = "abc123fakeToken456xyz";
 
-const fakeEmail = 'uynpham@gmail.com';
-const fakePassword = '123uynpham';
+const fakeEmail = "uynpham@gmail.com";
+const fakePassword = "123uynpham";
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .required("Email không được để trống")
+    .email("Email không hợp lệ"),
+  password: yup
+    .string()
+    .required("Mật khẩu không được để trống")
+    .min(8, "Mật khẩu phải có ít nhất 8 ký tự")
+    .matches(/^\S*$/, "Mật khẩu không được chứa dấu cách"),
+});
 
 const LoginForm = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.login.isLoading);
 
-  const { handleSubmit, control, formState: { errors, isValid, isSubmitting } } = useForm<LoginFormInputs>({
-    mode: 'onChange',
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid, isSubmitting },
+  } = useForm<LoginFormInputs>({
+    mode: "onChange",
+    resolver: yupResolver(schema),
   });
 
   const [serverError, setServerError] = useState<string | null>(null);
@@ -40,7 +59,7 @@ const LoginForm = () => {
           if (data.email === fakeEmail && data.password === fakePassword) {
             resolve();
           } else {
-            reject(new Error('Sai email hoặc mật khẩu'));
+            reject(new Error("Sai email hoặc mật khẩu"));
           }
         }, 1000);
       });
@@ -49,21 +68,21 @@ const LoginForm = () => {
       dispatch(requestSuccess());
       return;
     }
-  
-    localStorage.setItem('token', fakeToken);
+
+    localStorage.setItem("token", fakeToken);
     dispatch(setToken(fakeToken));
-    
+
     alert("Đăng nhập thành công");
     dispatch(requestSuccess());
-    router.push('/');
+    router.push("/");
   };
 
   const onForgotPassword = () => {
-    router.push('/forgot-password');
+    router.push("/forgot-password");
   };
 
   const onRegister = () => {
-    router.push('/register');
+    router.push("/register");
   };
 
   return (
@@ -77,68 +96,62 @@ const LoginForm = () => {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      sx={{ height: 'auto' }}
+      sx={{ height: "auto" }}
     >
       <Grid item>
-        <Typography variant="h5" sx={{ mb: 3, fontSize: 34, textAlign: 'center', fontWeight: 'bold', marginTop: '100px' }}>
+        <Typography
+          variant="h5"
+          sx={{
+            mb: 3,
+            fontSize: 34,
+            textAlign: "center",
+            fontWeight: "bold",
+            marginTop: "100px",
+          }}
+        >
           Đăng nhập vào tài khoản
         </Typography>
       </Grid>
 
-      <Grid item sx={{ width: '100%' }}>
-        <Typography className='label-input' variant="body1">
+      <Grid item sx={{ width: "100%" }}>
+        <Typography className="label-input" variant="body1">
           Email
         </Typography>
         <Controller
           name="email"
           control={control}
           defaultValue=""
-          rules={{
-            required: 'Email không được để trống',
-            pattern: {
-              value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-              message: 'Email không hợp lệ',
-            },
-          }}
           render={({ field }) => (
             <TextField
               {...field}
-              className='input-auth'
-              placeholder='Email'
+              className="input-auth"
+              placeholder="Email"
               type="email"
               fullWidth
               error={!!errors.email}
-              helperText={errors.email ? errors.email.message : ''}
+              helperText={errors.email ? errors.email.message : ""}
             />
           )}
         />
       </Grid>
 
-      <Grid item sx={{ width: '100%' }}>
-        <Typography className='label-input' variant="body1">
+      <Grid item sx={{ width: "100%" }}>
+        <Typography className="label-input" variant="body1">
           Mật khẩu
         </Typography>
         <Controller
           name="password"
           control={control}
           defaultValue=""
-          rules={{
-            required: 'Mật khẩu không được để trống',
-            minLength: {
-              value: 8,
-              message: 'Mật khẩu phải có ít nhất 8 ký tự',
-            },
-            validate: value => !/\s/.test(value) || 'Mật khẩu không được chứa dấu cách'
-          }}
           render={({ field }) => (
             <TextField
               {...field}
-              className='input-auth'
-              placeholder='Mật khẩu'
+              className="input-auth"
+              placeholder="Mật khẩu"
               type="password"
               fullWidth
               error={!!errors.password}
-              helperText={errors.password ? errors.password.message : ''}
+              helperText={errors.password ? errors.password.message : ""}
             />
           )}
         />
@@ -146,67 +159,76 @@ const LoginForm = () => {
 
       <Grid item container justifyContent="flex-end" sx={{ mb: 0 }}>
         <Button
-          sx={{ textDecoration: 'none', textAlign: 'right', fontSize: 14, fontWeight: 'regular' }}
+          sx={{
+            textDecoration: "none",
+            textAlign: "right",
+            fontSize: 14,
+            fontWeight: "regular",
+          }}
           onClick={onForgotPassword}
         >
           Quên mật khẩu?
         </Button>
       </Grid>
 
-      <Grid item sx={{ width: '100%', mb: 1 }}>
+      <Grid item sx={{ width: "100%", mb: 1 }}>
         <Button
-          className='button-auth'
+          className="button-auth"
           color="primary"
           type="submit"
           fullWidth
           disabled={!isValid || isSubmitting || isLoading}
           sx={{
-            color: '#FFFFFF',
-            backgroundColor: '#66BB6A',
-            padding: '5px 10px',
-            border: '2px solid #66BB6A',
-            '&:hover': {
-              backgroundColor: '#FFFFFF',
-              color: '#66BB6A',
+            color: "#FFFFFF",
+            backgroundColor: "#66BB6A",
+            padding: "5px 10px",
+            border: "2px solid #66BB6A",
+            "&:hover": {
+              backgroundColor: "#FFFFFF",
+              color: "#66BB6A",
             },
           }}
         >
-          {isLoading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+          {isLoading ? "Đang đăng nhập..." : "Đăng nhập"}
         </Button>
       </Grid>
 
       {serverError && (
-        <Grid item sx={{ width: '100%', mb: 1 }}>
-          <Typography variant="body2" color="error" sx={{ textAlign: 'center' }}>
+        <Grid item sx={{ width: "100%", mb: 1 }}>
+          <Typography
+            variant="body2"
+            color="error"
+            sx={{ textAlign: "center" }}
+          >
             {serverError}
           </Typography>
         </Grid>
       )}
 
       <Grid item>
-        <Typography variant="h5" sx={{ fontSize: 16, textAlign: 'center' }}>
+        <Typography variant="h5" sx={{ fontSize: 16, textAlign: "center" }}>
           Hoặc đăng ký tài khoản, nếu bạn chưa đăng ký!
         </Typography>
       </Grid>
 
-      <Grid item sx={{ width: '100%', marginTop: '100px' }}>
+      <Grid item sx={{ width: "100%", marginTop: "100px" }}>
         <Button
-          className='button-auth'
+          className="button-auth"
           color="primary"
           fullWidth
           sx={{
-            color: '#66BB6A',
-            backgroundColor: '#FFFFFF',
-            padding: '5px 10px',
-            border: '2px solid #66BB6A',
-            '&:hover': {
-              backgroundColor: '#66BB6A',
-              color: '#FFFFFF',
+            color: "#66BB6A",
+            backgroundColor: "#FFFFFF",
+            padding: "5px 10px",
+            border: "2px solid #66BB6A",
+            "&:hover": {
+              backgroundColor: "#66BB6A",
+              color: "#FFFFFF",
             },
           }}
           onClick={onRegister}
         >
-          {isLoading ? 'Đang đăng ký...' : 'Đăng ký'}
+          {isLoading ? "Đang đăng ký..." : "Đăng ký"}
         </Button>
       </Grid>
     </Grid>

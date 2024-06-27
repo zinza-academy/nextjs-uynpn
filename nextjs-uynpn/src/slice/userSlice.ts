@@ -10,7 +10,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  user: null,
+  user: null, 
   isLoading: false,
   error: null,
 };
