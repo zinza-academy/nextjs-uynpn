@@ -7,10 +7,10 @@ import RegisterForm from '@/app/component/form-auth/RegisterForm';
 
 const Register = () => {
   return (
-    <Box
+    <Box 
       sx={{
         display: 'flex',
-        height: '100vh',  // Đặt chiều cao cho toàn bộ trang là 100% chiều cao của viewport
+        height: '180vh',  // Đặt chiều cao cho toàn bộ trang là 100% chiều cao của viewport
         overflow: 'hidden',  // Ngăn chặn scroll ở mức trang
       }}
     >

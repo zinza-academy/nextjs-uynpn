@@ -23,7 +23,7 @@ const fakeEmail = "uynpham@gmail.com";
 const fakePassword = "123uynpham";
 
 const schema = yup.object().shape({
-  email: yup
+  email: yup 
     .string()
     .required("Email không được để trống")
     .email("Email không hợp lệ"),
