@@ -1,29 +1,79 @@
-'use client';
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { useRouter } from 'next/navigation'; // Đổi từ 'next/router' sang 'next/navigation'
+import { useRouter } from 'next/navigation'; 
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
 import { requestSuccess, sendRequest } from '@/slice/registerSlice';
-import '@/styles/app.css';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { Register } from '@/model/Register';
+import "@/styles/app.css";
 
-interface FormData {
-  email: string;
-  password: string;
-  cmnd: string;
-  name: string;
-  dob: string;
-  gender: string;
-  province: string;
-  district: string;
-  ward: string;
-}
+//fake data
+const provinces = [
+  { id: 1, name: 'Hà Nội' },
+  { id: 2, name: 'Hồ Chí Minh' },
+  { id: 3, name: 'Đà Nẵng' },
+];
 
-// Tạo schema xác thực bằng yup
+const districts: { [key: string]: { id: number; name: string; }[] } = {
+  'Hà Nội': [
+    { id: 11, name: 'Quận 1' },
+    { id: 12, name: 'Quận 2' },
+    { id: 13, name: 'Quận 3' },
+  ],
+  'Hồ Chí Minh': [
+    { id: 21, name: 'Quận Gò Vấp' },
+    { id: 22, name: 'Quận Tân Bình' },
+    { id: 23, name: 'Quận 10' },
+  ],
+  'Đà Nẵng': [
+    { id: 31, name: 'Quận Hải Châu' },
+    { id: 32, name: 'Quận Thanh Khê' },
+    { id: 33, name: 'Quận Sơn Trà' },
+  ],
+};
+
+const wards: { [key: string]: { id: number; name: string; }[] } = {
+  'Quận 1': [
+    { id: 111, name: 'Phường Bến Nghé' },
+    { id: 112, name: 'Phường Nguyễn Thái Bình' },
+  ],
+  'Quận 2': [
+    { id: 121, name: 'Phường Thảo Điền' },
+    { id: 122, name: 'Phường An Phú' },
+  ],
+  'Quận 3': [
+    { id: 131, name: 'Phường 1' },
+    { id: 132, name: 'Phường 2' },
+  ],
+  'Quận Gò Vấp': [
+    { id: 211, name: 'Phường 1' },
+    { id: 212, name: 'Phường 2' },
+  ],
+  'Quận Tân Bình': [
+    { id: 221, name: 'Phường 10' },
+    { id: 222, name: 'Phường 11' },
+  ],
+  'Quận 10': [
+    { id: 231, name: 'Phường 1' },
+    { id: 232, name: 'Phường 2' },
+  ],
+  'Quận Hải Châu': [
+    { id: 311, name: 'Phường Thanh Bình' },
+    { id: 312, name: 'Phường Thuận Phước' },
+  ],
+  'Quận Thanh Khê': [
+    { id: 321, name: 'Phường An Khê' },
+    { id: 322, name: 'Phường Hòa Khê' },
+  ],
+  'Quận Sơn Trà': [
+    { id: 331, name: 'Phường Mỹ An' },
+    { id: 332, name: 'Phường An Hải Bắc' },
+  ],
+};
+
 const validationSchema = yup.object().shape({
   cmnd: yup.string().required('Số CMND/CCCD không được để trống').length(12, 'Số CMND/CCCD phải có đúng 12 số'),
   email: yup.string().email('Email không hợp lệ').required('Email không được để trống'),
@@ -37,20 +87,37 @@ const validationSchema = yup.object().shape({
 });
 
 const RegisterForm = () => {
-  const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm<Register>({
     resolver: yupResolver(validationSchema)
   });
 
+  const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
+  const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
   const router = useRouter();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.register.isLoading);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: Register) => {
     dispatch(sendRequest());
     setTimeout(() => {
       dispatch(requestSuccess());
       router.push('/login');
     }, 2000);
+  };
+
+  // select theo tỉnh
+  const handleProvinceChange = (value: string) => {
+    setSelectedProvince(value);
+    setValue('province', value);
+    setSelectedDistrict(null);
+    setValue('district', '');
+    setValue('ward', '');
+  };
+
+  const handleDistrictChange = (value: string) => {
+    setSelectedDistrict(value);
+    setValue('district', value);
+    setValue('ward', '');
   };
 
   return (
@@ -203,7 +270,7 @@ const RegisterForm = () => {
 
       <Grid item sx={{ width: '100%', mb: 2 }}>
         <Typography className='label-input' variant="body1">
-          Tỉnh/Thành phố
+          Tỉnh/Thành phố <Box component="span" sx={{ color: 'red' }}>(*)</Box>
         </Typography>
         <Controller
           name="province"
@@ -211,15 +278,15 @@ const RegisterForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl fullWidth className='input-auth'>
-              <InputLabel>Tỉnh/Thành phố</InputLabel>
               <Select
                 {...field}
                 error={!!errors.province}
+                onChange={(e) => handleProvinceChange(e.target.value)}
               >
-                <MenuItem value=""><em>None</em></MenuItem>
-                <MenuItem value="Hà Nội">Hà Nội</MenuItem>
-                <MenuItem value="Hồ Chí Minh">Hồ Chí Minh</MenuItem>
-                <MenuItem value="Đà Nẵng">Đà Nẵng</MenuItem>
+                <MenuItem value=""><em>Chọn Tỉnh/Thành phố</em></MenuItem>
+                {provinces.map((province) => (
+                  <MenuItem key={province.id} value={province.name}>{province.name}</MenuItem>
+                ))}
               </Select>
               {errors.province && (
                 <Typography variant="caption" color="error">
@@ -233,7 +300,7 @@ const RegisterForm = () => {
 
       <Grid item sx={{ width: '100%', mb: 2 }}>
         <Typography className='label-input' variant="body1">
-          Quận/Huyện
+          Quận/Huyện <Box component="span" sx={{ color: 'red' }}>(*)</Box>
         </Typography>
         <Controller
           name="district"
@@ -241,15 +308,15 @@ const RegisterForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl fullWidth className='input-auth'>
-              <InputLabel>Quận/Huyện</InputLabel>
               <Select
                 {...field}
                 error={!!errors.district}
+                onChange={(e) => handleDistrictChange(e.target.value)}
               >
-                <MenuItem value=""><em>None</em></MenuItem>
-                <MenuItem value="Quận 1">Quận 1</MenuItem>
-                <MenuItem value="Quận 2">Quận 2</MenuItem>
-                <MenuItem value="Quận 3">Quận 3</MenuItem>
+                <MenuItem value=""><em>Chọn Quận/Huyện</em></MenuItem>
+                {selectedProvince && districts[selectedProvince]?.map((district) => (
+                  <MenuItem key={district.id} value={district.name}>{district.name}</MenuItem>
+                ))}
               </Select>
               {errors.district && (
                 <Typography variant="caption" color="error">
@@ -263,7 +330,7 @@ const RegisterForm = () => {
 
       <Grid item sx={{ width: '100%', mb: 2 }}>
         <Typography className='label-input' variant="body1">
-          Xã/Phường
+          Xã/Phường <Box component="span" sx={{ color: 'red' }}>(*)</Box>
         </Typography>
         <Controller
           name="ward"
@@ -271,15 +338,14 @@ const RegisterForm = () => {
           defaultValue=""
           render={({ field }) => (
             <FormControl fullWidth className='input-auth'>
-              <InputLabel>Xã/Phường</InputLabel>
               <Select
                 {...field}
                 error={!!errors.ward}
               >
-                <MenuItem value=""><em>None</em></MenuItem>
-                <MenuItem value="Phường 1">Phường 1</MenuItem>
-                <MenuItem value="Phường 2">Phường 2</MenuItem>
-                <MenuItem value="Phường 3">Phường 3</MenuItem>
+                <MenuItem value=""><em>Chọn Xã/Phường</em></MenuItem>
+                {selectedDistrict && wards[selectedDistrict]?.map((ward) => (
+                  <MenuItem key={ward.id} value={ward.name}>{ward.name}</MenuItem>
+                ))}
               </Select>
               {errors.ward && (
                 <Typography variant="caption" color="error">
@@ -309,7 +375,7 @@ const RegisterForm = () => {
             },
           }}
         >
-          {isLoading ? 'Đăng ký...' : 'Đăng ký'}
+          {isLoading ? 'Đang xử lý...' : 'Đăng ký'}
         </Button>
       </Grid>
 

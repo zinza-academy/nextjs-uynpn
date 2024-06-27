@@ -1,12 +1,11 @@
 export interface Register{
-    id: number;
-    idCard: string;
     email: string;
     password: string;
+    cmnd: string;
     name: string;
-    dateOfBirth: Date;
+    dob: string;
     gender: string;
-    district: string;
     province: string;
-    war: string;
-}
+    district: string;
+    ward: string;
+} 
