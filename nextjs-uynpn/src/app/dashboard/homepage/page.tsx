@@ -22,6 +22,10 @@ const HomePage = () => {
     router.push('/login');
   };
 
+  const handleLogin = () => {
+    router.push('/login')
+  }
+
   return (
     <Box sx={{ padding: 3 }}>
       <IconButton onClick={handleLoadUser} sx={{ mb: 2 }}>
@@ -50,6 +54,15 @@ const HomePage = () => {
           </Typography>
         </>
       )}
+
+      <Button
+        onClick={handleLogin}
+        variant="contained"
+        color="primary"
+        sx={{ mt: 2 }}
+      >
+        Đăng nhập
+      </Button>
 
       <Button
         onClick={handleLogout}
