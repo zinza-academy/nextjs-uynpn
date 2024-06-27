@@ -7,12 +7,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
 import { requestSuccess, sendRequest } from '@/slice/forgotPasswordSlice';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { setToken } from '@/slice/loginSlice';
 import '@/styles/app.css';
 
 interface LoginFormInputs {
   email: string;
   password: string;
 }
+
+const fakeToken = 'abc123fakeToken456xyz';
+
+const fakeEmail = 'uynpham@gmail.com';
+const fakePassword = '123uynpham';
 
 const LoginForm = () => {
   const router = useRouter();
@@ -24,9 +30,6 @@ const LoginForm = () => {
   });
 
   const [serverError, setServerError] = useState<string | null>(null);
-
-  const fakeEmail = 'uynpham@gmail.com';
-  const fakePassword = '123uynpham';
 
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     dispatch(sendRequest());
@@ -46,7 +49,11 @@ const LoginForm = () => {
       dispatch(requestSuccess());
       return;
     }
-
+  
+    localStorage.setItem('token', fakeToken);
+    dispatch(setToken(fakeToken));
+    
+    alert("Đăng nhập thành công");
     dispatch(requestSuccess());
     router.push('/dashboard');
   };

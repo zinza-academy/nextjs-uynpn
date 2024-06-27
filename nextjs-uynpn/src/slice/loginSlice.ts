@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface LoginState {
   isLoading: boolean;
+  token: string | null;
 }
 
 const initialState: LoginState = {
   isLoading: false,
+  token: null
 };
 
 const loginSlice = createSlice({
@@ -18,8 +20,14 @@ const loginSlice = createSlice({
     requestSuccess: (state) => {
       state.isLoading = false;
     }, 
+    setToken(state, action: PayloadAction<string>) {
+      state.token = action.payload;
+    },
+    clearToken(state) {
+      state.token = null;
+    },
   },
 });
 
-export const { sendRequest, requestSuccess } = loginSlice.actions;
+export const { sendRequest, requestSuccess, setToken, clearToken } = loginSlice.actions;
 export default loginSlice.reducer;
