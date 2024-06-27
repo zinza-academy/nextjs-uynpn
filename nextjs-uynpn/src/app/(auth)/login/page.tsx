@@ -9,7 +9,7 @@ const LoginPage = () => {
   return (
     <Box
       sx={{
-        display: 'flex',
+        display: 'flex', 
         height: '100vh', 
         overflow: 'hidden', 
       }}
