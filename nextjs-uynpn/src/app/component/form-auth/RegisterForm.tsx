@@ -22,58 +22,58 @@ const provinces = [
   { id: 3, name: 'Đà Nẵng' },
 ];
 
-const districts: { [key: string]: { id: number; name: string; }[] } = {
-  'Hà Nội': [
+const districts: { [key: number]: { id: number; name: string; }[] } = {
+   1: [
     { id: 11, name: 'Quận 1' },
     { id: 12, name: 'Quận 2' },
     { id: 13, name: 'Quận 3' },
   ],
-  'Hồ Chí Minh': [
+   2: [
     { id: 21, name: 'Quận Gò Vấp' },
     { id: 22, name: 'Quận Tân Bình' },
     { id: 23, name: 'Quận 10' },
   ],
-  'Đà Nẵng': [
+   3: [
     { id: 31, name: 'Quận Hải Châu' },
     { id: 32, name: 'Quận Thanh Khê' },
     { id: 33, name: 'Quận Sơn Trà' },
   ],
 };
 
-const wards: { [key: string]: { id: number; name: string; }[] } = {
-  'Quận 1': [
+const wards: { [key: number]: { id: number; name: string; }[] } = {
+   11: [
     { id: 111, name: 'Phường Bến Nghé' },
     { id: 112, name: 'Phường Nguyễn Thái Bình' },
   ],
-  'Quận 2': [
+   12: [
     { id: 121, name: 'Phường Thảo Điền' },
     { id: 122, name: 'Phường An Phú' },
   ],
-  'Quận 3': [
+   13: [
     { id: 131, name: 'Phường 1' },
     { id: 132, name: 'Phường 2' },
   ],
-  'Quận Gò Vấp': [
+   21: [
     { id: 211, name: 'Phường 1' },
     { id: 212, name: 'Phường 2' },
   ],
-  'Quận Tân Bình': [
+   22: [
     { id: 221, name: 'Phường 10' },
     { id: 222, name: 'Phường 11' },
   ],
-  'Quận 10': [
+   23: [
     { id: 231, name: 'Phường 1' },
     { id: 232, name: 'Phường 2' },
   ],
-  'Quận Hải Châu': [
+   31: [
     { id: 311, name: 'Phường Thanh Bình' },
     { id: 312, name: 'Phường Thuận Phước' },
   ],
-  'Quận Thanh Khê': [
+   32: [
     { id: 321, name: 'Phường An Khê' },
     { id: 322, name: 'Phường Hòa Khê' },
   ],
-  'Quận Sơn Trà': [
+   33: [
     { id: 331, name: 'Phường Mỹ An' },
     { id: 332, name: 'Phường An Hải Bắc' },
   ],
@@ -129,17 +129,17 @@ const RegisterForm = () => {
   };
 
   // select theo tỉnh
-  const handleProvinceChange = (value: string) => {
+  const handleProvinceChange = (value: number) => {
     setSelectedProvince(value);
-    setValue('province', value);
+    setValue('province', value.toString());
     setSelectedDistrict(null);
     setValue('district', '');
     setValue('ward', '');
   };
-
-  const handleDistrictChange = (value: string) => {
+  
+  const handleDistrictChange = (value: number) => {
     setSelectedDistrict(value);
-    setValue('district', value);
+    setValue('district', value.toString());
     setValue('ward', '');
   };
 
@@ -316,7 +316,7 @@ const RegisterForm = () => {
               >
                 <MenuItem value=""><em>Chọn Tỉnh/Thành phố</em></MenuItem>
                 {provinces.map((province) => (
-                  <MenuItem key={province.id} value={province.name}>{province.name}</MenuItem>
+                  <MenuItem key={province.id} value={province.id}>{province.name}</MenuItem>
                 ))}
               </Select>
               {errors.province && (
@@ -346,7 +346,7 @@ const RegisterForm = () => {
               >
                 <MenuItem value=""><em>Chọn Quận/Huyện</em></MenuItem>
                 {selectedProvince && districts[selectedProvince]?.map((district) => (
-                  <MenuItem key={district.id} value={district.name}>{district.name}</MenuItem>
+                  <MenuItem key={district.id} value={district.id}>{district.name}</MenuItem>
                 ))}
               </Select>
               {errors.district && (
@@ -375,7 +375,7 @@ const RegisterForm = () => {
               >
                 <MenuItem value=""><em>Chọn Xã/Phường</em></MenuItem>
                 {selectedDistrict && wards[selectedDistrict]?.map((ward) => (
-                  <MenuItem key={ward.id} value={ward.name}>{ward.name}</MenuItem>
+                  <MenuItem key={ward.id} value={ward.id}>{ward.name}</MenuItem>
                 ))}
               </Select>
               {errors.ward && (
