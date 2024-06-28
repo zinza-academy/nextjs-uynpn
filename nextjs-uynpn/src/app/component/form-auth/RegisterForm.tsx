@@ -8,7 +8,12 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { Register } from '@/model/Register';
-import "@/styles/app.css";
+import "@/styles/app.css"
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { styled } from '@mui/material/styles';
 
 //fake data
 const provinces = [
@@ -74,12 +79,17 @@ const wards: { [key: string]: { id: number; name: string; }[] } = {
   ],
 };
 
+const StyledTextField = styled(TextField)({
+  width: '200px',
+  
+});
+
 const validationSchema = yup.object().shape({
-  cmnd: yup.string().required('Số CMND/CCCD không được để trống').length(12, 'Số CMND/CCCD phải có đúng 12 số'),
+  cmnd: yup.string().required('Số CMND/CCCD không được để trống').length(9 || 12, 'Số CMND/CCCD phải có đúng 12 số'),
   email: yup.string().email('Email không hợp lệ').required('Email không được để trống'),
   password: yup.string().required('Mật khẩu không được để trống'),
   name: yup.string().required('Họ và tên không được để trống'),
-  dob: yup.string().required('Ngày sinh không được để trống'),
+  dob: yup.date().required('Ngày sinh không được để trống'),
   gender: yup.string().required('Giới tính không được để trống'),
   province: yup.string().required('Tỉnh không được để trống'), 
   district: yup.string().required('Huyện không được để trống'),
@@ -98,6 +108,7 @@ const RegisterForm = () => {
   const isLoading = useSelector((state: RootState) => state.register.isLoading);
 
   const onSubmit = (data: Register) => {
+    console.log("thông tin đăng kí", data)
     dispatch(sendRequest());
     setTimeout(() => {
       dispatch(requestSuccess());
@@ -227,26 +238,34 @@ const RegisterForm = () => {
       </Grid>
 
       <Grid item sx={{ width: '100%', mb: 2 }}>
-        <Typography className='label-input' variant="body1">
-          Ngày sinh <Box component="span" sx={{ color: 'red' }}>(*)</Box>
-        </Typography>
-        <Controller
-          name="dob"
-          control={control}
-          defaultValue=""
-          render={({ field }) => (
-            <TextField
-              className='input-auth'
-              placeholder='Ngày/Tháng/Năm'
-              fullWidth
+      <Typography className='label-input' variant="body1">
+        Ngày sinh <Box component="span" sx={{ color: 'red' }}>(*)</Box>
+      </Typography>
+      <Controller
+        name="dob"
+        control={control}
+        render={({ field }) => (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
               {...field}
-              error={!!errors.dob}
-              helperText={errors.dob ? errors.dob.message : ''}
+              value={field.value ? dayjs(field.value) : null}
+              onChange={(date: Dayjs | null) => field.onChange(date ? date.toDate() : null)}
+              renderInput={(params: any) => (
+                <StyledTextField
+                  className="fullWidthInput" 
+                  sx={{ paddingRight: '1000' }} 
+                  fullWidth
+                  {...params}
+                  error={!!errors.dob}
+                  helperText={errors.dob ? errors.dob.message : ''}
+                />
+              )}
             />
-          )}
-        />
-      </Grid>
-
+          </LocalizationProvider>
+        )}
+      />
+    </Grid>
+      
       <Grid item sx={{ width: '100%', mb: 2 }}>
         <Typography className='label-input' variant="body1">
           Giới tính <Box component="span" sx={{ color: 'red' }}>(*)</Box>

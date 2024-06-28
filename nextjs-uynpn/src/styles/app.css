@@ -30,3 +30,7 @@ body {
 .banner-auth{
     position: fixed;
 }
+
+.fullWidthInput {
+    width: 100% !important;
+  }
