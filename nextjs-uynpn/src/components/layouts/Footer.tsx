@@ -1,8 +1,10 @@
 import React from "react";
-import { Box, Typography, Container, Grid } from "@mui/material";
+import { Box, Typography, Grid, Button } from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
-    return (
+  return (
     <Box
       component="footer"
       sx={{
@@ -12,31 +14,120 @@ const Footer = () => {
         display: "flex",
       }}
     >
-      <Container
-        sx={{
-            marginTop: '16px',
-            marginBottom: '16px',
-            marginLeft: '16px',
-            marginRight: '16px',
-          }}
+      <Grid
+        container
+        justifyContent="space-between"
+        sx={{ mt: "16px", mb: "16px", mx: "32px" }}
       >
-        <Grid container >
-          <Grid item xs={12} sm={4}>
-            <Typography variant="h6">About Us</Typography>
-            <Typography variant="body2">
-              Information about the company, mission, values, etc.
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sm={4} sx={{ ml: "auto" }}>
-            <Typography variant="h6">Follow Us</Typography>
-            <Typography variant="body2">
-              Links to social media profiles.
-            </Typography>
-          </Grid>
+        <Grid item xs={12} sm={6}>
+          <Typography variant="body2">
+            © Bản quyền thuộc TRUNG TÂM CÔNG NGHỆ PHÒNG, CHỐNG DỊCH COVID-19
+            QUỐC GIA
+          </Typography>
+          <Typography variant="body2" sx={{ mt: 2 }}>
+            Phát triển bởi <span>Viettel</span>
+          </Typography>
+          <Box sx={{ width: 195, height: 89, position: "relative", mt: 2 }}>
+            <Image
+              src="/Logo/Logo2bo.png"
+              alt="Login Image"
+              layout="fill"
+              objectFit="cover"
+            />
+          </Box>
         </Grid>
-      </Container>
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          sx={{
+            ml: "auto",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+          }}
+        >
+          <Typography variant="body2">
+            Tải sổ sức khỏe điện tử để đăng ký tiêm và nhận giấy chứng nhận tiêm
+          </Typography>
+          <Box sx={{ mt: 2 }}>
+            <Button
+              variant="contained"
+              sx={{
+                fontSize: 16,
+                fontWeight: "medium",
+                backgroundColor: "#2D2188",
+                color: "#FFFFFF",
+                paddingX: '20px',
+                paddingY: '8px',
+                border: "1px solid #FFFFFF",
+                borderRadius: "5px 5px 5px 0",
+                "&:hover": {
+                  backgroundColor: "#FFFFFF",
+                  color: "#2D2188",
+                },
+              }}
+            >
+              <Link href="/login" passHref>
+                App tiêm di động (Cho HCM)
+              </Link>
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                fontSize: 16,
+                fontWeight: "medium",
+                backgroundColor: "#2D2188",
+                color: "#FFFFFF",
+                paddingX: '20px',
+                paddingY: '8px',
+                border: "1px solid #FFFFFF",
+                mx: 2,
+                borderRadius: "5px 5px 5px 0",
+                "&:hover": {
+                  backgroundColor: "#FFFFFF",
+                  color: "#2D2188",
+                },
+              }}
+            >
+              <Link href="/login" passHref>
+                App Store
+              </Link>
+            </Button>
+            <Button
+              variant="contained"
+              sx={{
+                fontSize: 16,
+                fontWeight: "medium",
+                backgroundColor: "#2D2188",
+                color: "#FFFFFF",
+                paddingX: '20px',
+                paddingY: '8px',
+                border: "1px solid #FFFFFF",
+                borderRadius: "5px 5px 5px 0",
+                "&:hover": {
+                  backgroundColor: "#FFFFFF",
+                  color: "#2D2188",
+                },
+              }}
+            >
+              <Link href="/login" passHref>
+                Google play
+              </Link>
+            </Button>
+          </Box>
+          <Box sx={{ width: 220, height: 100, position: "relative", mt: 2 }}>
+            <Image
+              src="/img/handle_cert 1.png"
+              alt="Login Image"
+              layout="fill"
+              objectFit="cover"
+            />
+          </Box>
+        </Grid>
+      </Grid>
     </Box>
   );
-}
+};
 
-export default Footer
+export default Footer;
