@@ -98,8 +98,20 @@ const validationSchema = yup.object().shape({
 
 const RegisterForm = () => {
   const { control, handleSubmit, formState: { errors }, setValue, watch } = useForm<Register>({
-    resolver: yupResolver(validationSchema)
+    resolver: yupResolver(validationSchema),
+    defaultValues: {
+      cmnd: '',
+      email: '',
+      password: '',
+      name: '',
+      dob: '',
+      gender: '',
+      province: '',
+      district: '',
+      ward: '',
+    },
   });
+  
 
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
@@ -221,7 +233,7 @@ const RegisterForm = () => {
           Họ và tên <Box component="span" sx={{ color: 'red' }}>(*)</Box>
         </Typography>
         <Controller
-          name="name"
+          name="name" 
           control={control}
           defaultValue=""
           render={({ field }) => (
