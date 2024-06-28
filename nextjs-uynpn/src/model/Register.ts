@@ -5,7 +5,7 @@ export interface Register{
     name: string;
     dob: string;
     gender: string;
-    province: string;
-    district: string;
-    ward: string;
+    province?: number;
+    district?: number;
+    ward?: number;
 } 

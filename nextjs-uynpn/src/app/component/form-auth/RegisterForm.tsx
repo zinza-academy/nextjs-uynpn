@@ -14,70 +14,64 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
 import { styled } from '@mui/material/styles';
+import { Province } from '@/model/Province';
 
 //fake data
-const provinces = [
-  { id: 1, name: 'Hà Nội' },
-  { id: 2, name: 'Hồ Chí Minh' },
-  { id: 3, name: 'Đà Nẵng' },
+type LocationData = Province[];
+const locationData: LocationData = [
+  {
+    id: 1,
+    name: "Hà Nội",
+    districts: [
+      {
+        id: 1,
+        name: "Ba Đình",
+        provinceId: 1,
+        wards: [
+          { id: 1, name: "Phúc Xá" },
+          { id: 2, name: "Trúc Bạch" },
+          { id: 3, name: "Vĩnh Phúc" },
+        ],
+      },
+      {
+        id: 2,
+        name: "Cầu Giấy",
+        provinceId: 1,
+        wards: [
+          { id: 1, name: "Nghĩa Đô" },
+          { id: 2, name: "Nghĩa Tân" },
+          { id: 3, name: "Mai Dịch" },
+        ],
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: "Hồ Chí Minh",
+    districts: [
+      {
+        id: 1,
+        name: "Quận 1",
+        provinceId: 2,
+        wards: [
+          { id: 1, name: "Bến Nghé" },
+          { id: 2, name: "Bến Thành" },
+          { id: 3, name: "Cầu Kho" },
+        ],
+      },
+      {
+        id: 2,
+        name: "Quận 2",
+        provinceId: 2,
+        wards: [
+          { id: 1, name: "An Phú" },
+          { id: 2, name: "Thảo Điền" },
+          { id: 3, name: "Bình An" },
+        ],
+      },
+    ],
+  },
 ];
-
-const districts: { [key: number]: { id: number; name: string; }[] } = {
-   1: [
-    { id: 11, name: 'Quận 1' },
-    { id: 12, name: 'Quận 2' },
-    { id: 13, name: 'Quận 3' },
-  ],
-   2: [
-    { id: 21, name: 'Quận Gò Vấp' },
-    { id: 22, name: 'Quận Tân Bình' },
-    { id: 23, name: 'Quận 10' },
-  ],
-   3: [
-    { id: 31, name: 'Quận Hải Châu' },
-    { id: 32, name: 'Quận Thanh Khê' },
-    { id: 33, name: 'Quận Sơn Trà' },
-  ],
-};
-
-const wards: { [key: number]: { id: number; name: string; }[] } = {
-   11: [
-    { id: 111, name: 'Phường Bến Nghé' },
-    { id: 112, name: 'Phường Nguyễn Thái Bình' },
-  ],
-   12: [
-    { id: 121, name: 'Phường Thảo Điền' },
-    { id: 122, name: 'Phường An Phú' },
-  ],
-   13: [
-    { id: 131, name: 'Phường 1' },
-    { id: 132, name: 'Phường 2' },
-  ],
-   21: [
-    { id: 211, name: 'Phường 1' },
-    { id: 212, name: 'Phường 2' },
-  ],
-   22: [
-    { id: 221, name: 'Phường 10' },
-    { id: 222, name: 'Phường 11' },
-  ],
-   23: [
-    { id: 231, name: 'Phường 1' },
-    { id: 232, name: 'Phường 2' },
-  ],
-   31: [
-    { id: 311, name: 'Phường Thanh Bình' },
-    { id: 312, name: 'Phường Thuận Phước' },
-  ],
-   32: [
-    { id: 321, name: 'Phường An Khê' },
-    { id: 322, name: 'Phường Hòa Khê' },
-  ],
-   33: [
-    { id: 331, name: 'Phường Mỹ An' },
-    { id: 332, name: 'Phường An Hải Bắc' },
-  ],
-};
 
 const StyledTextField = styled(TextField)({
   width: '200px',
@@ -102,13 +96,13 @@ const RegisterForm = () => {
     defaultValues: {
       cmnd: '',
       email: '',
-      password: '',
+      password: '', 
       name: '',
       dob: '',
       gender: '',
-      province: '',
-      district: '',
-      ward: '',
+      province: 0,
+      district: 0,
+      ward: 0,
     },
   });
   
@@ -128,19 +122,27 @@ const RegisterForm = () => {
     }, 2000);
   };
 
-  // select theo tỉnh
   const handleProvinceChange = (value: number) => {
     setSelectedProvince(value);
-    setValue('province', value.toString());
+    const selectedProvinceData = locationData.find(province => province.id === value);
+    if (selectedProvinceData) {
+      setValue('province', selectedProvinceData.id);
+      setValue('district', 0);
+      setValue('ward', 0);
+    }
     setSelectedDistrict(null);
-    setValue('district', '');
-    setValue('ward', '');
   };
-  
+
   const handleDistrictChange = (value: number) => {
     setSelectedDistrict(value);
-    setValue('district', value.toString());
-    setValue('ward', '');
+    const selectedProvinceData = locationData.find(province => province.id === selectedProvince);
+    if (selectedProvinceData) {
+      const selectedDistrictData = selectedProvinceData.districts.find(district => district.id === value);
+      if (selectedDistrictData) {
+        setValue('district', selectedDistrictData.id);
+        setValue('ward', 0);
+      }
+    }
   };
 
   return (
@@ -306,24 +308,22 @@ const RegisterForm = () => {
         <Controller
           name="province"
           control={control}
-          defaultValue=""
           render={({ field }) => (
-            <FormControl fullWidth className='input-auth'>
+            <FormControl fullWidth error={!!errors.province}>
               <Select
                 {...field}
-                error={!!errors.province}
-                onChange={(e) => handleProvinceChange(e.target.value)}
+                value={field.value || ''}
+                onChange={(e) => handleProvinceChange(Number(e.target.value))}
               >
-                <MenuItem value=""><em>Chọn Tỉnh/Thành phố</em></MenuItem>
-                {provinces.map((province) => (
-                  <MenuItem key={province.id} value={province.id}>{province.name}</MenuItem>
+                {locationData.map(province => (
+                  <MenuItem key={province.id} value={province.id}>
+                    {province.name}
+                  </MenuItem>
                 ))}
               </Select>
-              {errors.province && (
-                <Typography variant="caption" color="error">
-                  {errors.province.message}
-                </Typography>
-              )}
+              <Typography variant="caption" color="error">
+                {errors.province ? errors.province.message : ''}
+              </Typography>
             </FormControl>
           )}
         />
@@ -336,24 +336,24 @@ const RegisterForm = () => {
         <Controller
           name="district"
           control={control}
-          defaultValue=""
           render={({ field }) => (
-            <FormControl fullWidth className='input-auth'>
+            <FormControl fullWidth error={!!errors.district}>
               <Select
                 {...field}
-                error={!!errors.district}
-                onChange={(e) => handleDistrictChange(e.target.value)}
+                value={field.value || ''}
+                onChange={(e) => handleDistrictChange(Number(e.target.value))}
+                disabled={!selectedProvince}
               >
-                <MenuItem value=""><em>Chọn Quận/Huyện</em></MenuItem>
-                {selectedProvince && districts[selectedProvince]?.map((district) => (
-                  <MenuItem key={district.id} value={district.id}>{district.name}</MenuItem>
-                ))}
+                {selectedProvince &&
+                  locationData.find(province => province.id === Number(selectedProvince))?.districts.map(district => (
+                    <MenuItem key={district.id} value={district.id}>
+                      {district.name}
+                    </MenuItem>
+                  ))}
               </Select>
-              {errors.district && (
-                <Typography variant="caption" color="error">
-                  {errors.district.message}
-                </Typography>
-              )}
+              <Typography variant="caption" color="error">
+                {errors.district ? errors.district.message : ''}
+              </Typography>
             </FormControl>
           )}
         />
@@ -366,23 +366,27 @@ const RegisterForm = () => {
         <Controller
           name="ward"
           control={control}
-          defaultValue=""
           render={({ field }) => (
-            <FormControl fullWidth className='input-auth'>
+            <FormControl fullWidth error={!!errors.ward}>
               <Select
                 {...field}
-                error={!!errors.ward}
+                value={field.value || ''}
+                onChange={(e) => setValue('ward', e.target.value)}
+                disabled={!selectedDistrict}
               >
-                <MenuItem value=""><em>Chọn Xã/Phường</em></MenuItem>
-                {selectedDistrict && wards[selectedDistrict]?.map((ward) => (
-                  <MenuItem key={ward.id} value={ward.id}>{ward.name}</MenuItem>
-                ))}
+                {selectedDistrict &&
+                  locationData
+                    .find(province => province.id === Number(selectedProvince))
+                    ?.districts.find(district => district.id === Number(selectedDistrict))
+                    ?.wards.map(ward => (
+                      <MenuItem key={ward.id} value={ward.id}>
+                        {ward.name}
+                      </MenuItem>
+                    ))}
               </Select>
-              {errors.ward && (
-                <Typography variant="caption" color="error">
-                  {errors.ward.message}
-                </Typography>
-              )}
+              <Typography variant="caption" color="error">
+                {errors.ward ? errors.ward.message : ''}
+              </Typography>
             </FormControl>
           )}
         />
