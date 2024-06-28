@@ -20,7 +20,7 @@ const themeOptions: ThemeOptions = {
     MuiTextField: {
       styleOverrides: {
         root: {
-          width: '100%', // Ensure input fields have full width
+          width: '100%',
         },
       },
     },
