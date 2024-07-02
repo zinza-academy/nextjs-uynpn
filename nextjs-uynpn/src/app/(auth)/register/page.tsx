@@ -49,4 +49,3 @@ const Register = () => {
 }
 
 export default Register;
-//add end line

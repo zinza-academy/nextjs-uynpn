@@ -5,4 +5,3 @@ export interface Province {
     name: string;
     districts: District[];
   }
-// add end line

@@ -6,5 +6,3 @@ export interface District {
     provinceId: number;
     wards: Ward[];
   }
-
-  // add end line

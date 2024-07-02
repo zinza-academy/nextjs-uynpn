@@ -9,4 +9,3 @@ export interface Register{
     district?: number;
     ward?: number;
 }
-// add end line

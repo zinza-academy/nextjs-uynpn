@@ -110,4 +110,3 @@ const ForgotPasswordForm = () => {
 };
 
 export default ForgotPasswordForm;
-//add end line

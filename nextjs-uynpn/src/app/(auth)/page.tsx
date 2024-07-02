@@ -42,4 +42,3 @@ export default function AuthLayout({
     </div>
   );
 }
-// add end line
