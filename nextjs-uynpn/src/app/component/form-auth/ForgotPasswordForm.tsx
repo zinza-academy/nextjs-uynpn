@@ -51,7 +51,7 @@ const ForgotPasswordForm = () => {
       <Typography
         variant="h5"
         sx={{
-          mb: 2, 
+          mb: 2,
           fontSize: 16,
           textAlign: 'center'
         }}
@@ -61,7 +61,7 @@ const ForgotPasswordForm = () => {
       <TextField
         className='label-input'
         label="Email"
-        type="email" 
+        type="email"
         fullWidth
         required
         {...register('email', { required: 'Email is required' })}
@@ -110,3 +110,4 @@ const ForgotPasswordForm = () => {
 };
 
 export default ForgotPasswordForm;
+//add end line
