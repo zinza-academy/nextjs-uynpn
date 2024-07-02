@@ -7,7 +7,7 @@ import ItemParameter from '@/app/component/common/item-parameter';
 import ItemChart from '@/app/component/common/item-chart';
 import { Typography } from '@mui/material';
 import SearchInject from '@/app/component/common/item-searchInjectPoin';
-
+ 
 const HomePage: React.FC = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
