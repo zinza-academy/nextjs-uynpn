@@ -24,7 +24,7 @@ const Img = styled('img')({
 const ItemParameter: React.FC<ItemParameterProps> = ({ imgSrc, title, content, unit }) => (
   <Grid
     container
-    sx={{
+    sx={{ 
       height: "60",
       width: "455.33",
       backgroundColor: '#fff',
