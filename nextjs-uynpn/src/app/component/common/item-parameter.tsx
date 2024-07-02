@@ -26,14 +26,13 @@ const ItemParameter: React.FC<ItemParameterProps> = ({ imgSrc, title, content, u
     container
     sx={{ 
       height: "60",
-      width: "455.33",
+      width: "100%",
       backgroundColor: '#fff',
       paddingLeft: 2,
       paddingRight: 2,
       alignItems: 'center',
       justifyContent: 'center',
-      border: '1px solid #ccc',
-      borderRadius: '8px',
+      border: '1px solid #ccc'
     }}
   >
     <Grid item>
@@ -44,7 +43,7 @@ const ItemParameter: React.FC<ItemParameterProps> = ({ imgSrc, title, content, u
     <Grid item xs container direction="column">
       <Grid item>
         <Typography variant="subtitle1" component="div" sx={{ color: 'black', fontSize: 16, fontWeight: 'bold' }}>
-          {title}
+          {title} 
         </Typography>
       </Grid>
       <Grid item>
