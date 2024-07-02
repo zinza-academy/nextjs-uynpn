@@ -16,9 +16,16 @@ const themeOptions: ThemeOptions = {
   typography: {
     fontFamily: roboto.style.fontFamily,
   },
-  palette: {
-    
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          width: '100%',
+        },
+      },
+    },
   },
+  palette: {},
 };
 
 const theme = createTheme(themeOptions);

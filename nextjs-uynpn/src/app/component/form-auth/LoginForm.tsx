@@ -23,7 +23,7 @@ const fakeEmail = "uynpham@gmail.com";
 const fakePassword = "123uynpham";
 
 const schema = yup.object().shape({
-  email: yup
+  email: yup 
     .string()
     .required("Email không được để trống")
     .email("Email không hợp lệ"),
@@ -34,7 +34,7 @@ const schema = yup.object().shape({
     .matches(/^\S*$/, "Mật khẩu không được chứa dấu cách"),
 });
 
-const LoginForm = () => {
+const LoginForm = () => { 
   const router = useRouter();
   const dispatch = useDispatch();
   const isLoading = useSelector((state: RootState) => state.login.isLoading);

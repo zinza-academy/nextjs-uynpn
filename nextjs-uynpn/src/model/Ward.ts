@@ -1,4 +1,4 @@
-export interface Role{
+export interface Ward {
     id: number;
     name: string;
-}
+  }

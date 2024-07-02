@@ -12,7 +12,7 @@ interface UserState {
 const initialState: UserState = {
   user: null, 
   isLoading: false,
-  error: null,
+  error: null, 
 };
 
 export const fetchUser = createAsyncThunk('user/fetchUser', async (_, { rejectWithValue }) => {

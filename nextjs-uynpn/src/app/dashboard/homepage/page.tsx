@@ -13,7 +13,7 @@ const HomePage = () => {
   const [isUserLoaded, setIsUserLoaded] = useState(false);
   const router = useRouter();
 
-  const handleLoadUser = () => {
+  const handleLoadUser = () => { 
     dispatch(fetchUser());
     setIsUserLoaded(true);
   };
