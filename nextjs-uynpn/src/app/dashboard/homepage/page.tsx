@@ -51,23 +51,54 @@ const HomePage: React.FC = () => {
         </Box>
       </Container>
 
-      <Box
-        sx={{ width: "100%", mt: 5, display: "flex", justifyContent: "center" }}
-      >
-        <Container maxWidth="xl">
-          <ItemChart />
-          <Typography variant="h6" sx={{ mt: 1 }}>
-            Dữ liệu theo ngày
-          </Typography>
-        </Container>
-      </Box>
-
-      <Container sx={{ mb: 2, p: 2, mt: 2 }} maxWidth="xl">
+      <Container sx={{ 
+        p: 2, 
+        mt: 2, 
+          }} maxWidth="xl">
         <Grid
           container
           spacing={1}
           justifyContent="space-between"
           alignItems="center"
+          sx={{ 
+            mb: 2, 
+            p: 2, 
+            mt: 2, 
+            borderRadius: '16px',
+            boxShadow: 'none',
+            '&': {
+              boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)'
+            }
+          }}
+        >
+          <Grid item xs={12} sm={12} md={12}>
+          <ItemChart />
+          <Typography variant="h6" sx={{ mt: 1 }}>
+            Dữ liệu theo ngày
+          </Typography>
+          </Grid>
+        </Grid>
+      </Container>
+
+      <Container sx={{ 
+        mb: 2, 
+        p: 2,  
+        }} maxWidth="xl">
+        <Grid
+          container
+          spacing={1}
+          justifyContent="space-between"
+          alignItems="center"
+          sx={{ 
+            mb: 2, 
+            p: 2, 
+            mt: 2, 
+            borderRadius: '16px',
+            boxShadow: 'none',
+            '&': {
+              boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.3)'
+            }
+          }}
         >
           <Grid item xs={12} sm={12} md={12}>
             <Typography variant="h6" sx={{ mt: 1 }}>

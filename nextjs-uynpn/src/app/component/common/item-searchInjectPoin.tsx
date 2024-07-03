@@ -17,10 +17,12 @@ import {
   MenuItem,
   Button,
   Box,
+  Divider,
 } from "@mui/material";
 import Link from "next/link";
 import { Province } from "@/model/Province";
 import { tableCellClasses } from "@mui/material/TableCell";
+import { InjectionPoin } from "@/model/InjectionPoints";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -99,7 +101,7 @@ const locationData: LocationData = [
   },
 ];
 
-const rows = [
+const rows: InjectionPoin[] = [
   {
     stt: "1",
     tenDiemTiem: "Tên điểm tiêm 1",

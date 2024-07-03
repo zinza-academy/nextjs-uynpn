@@ -25,7 +25,7 @@ const chartData = {
 
 const ItemChart: React.FC = () => {
   return (
-    <div style={{ height: '510', width: '1336',  display: 'flex', justifyContent: 'center', border: '1px solid red'}}>
+    <div style={{ height: '510', width: 'auto',  display: 'flex', justifyContent: 'center', border: '1px solid red'}}>
       <Line data={chartData} />
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -17,16 +17,24 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import EastIcon from "@mui/icons-material/East";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "@/lib/store";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { fetchUser } from '@/slice/userSlice';
-
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { fetchUser, clearUser } from "@/slice/userSlice";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(null);
+  const [showLoginButton, setShowLoginButton] = useState<boolean>(false); 
   const token = useSelector((state: RootState) => state.login.token);
-  const dispatch: AppDispatch = useDispatch();  
+  const dispatch: AppDispatch = useDispatch();
   const { user, isLoading, error } = useSelector((state: RootState) => state.user);
-  const [isUserLoaded, setIsUserLoaded] = useState(false);
+
+  useEffect(() => {
+    if (token && !user) {
+      dispatch(fetchUser());
+    } else {
+      setShowLoginButton(!token); 
+    }
+  }, [token, user, dispatch]);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -36,9 +44,18 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const handleLoadUser = () => { 
-    dispatch(fetchUser());
-    setIsUserLoaded(true);
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setProfileAnchorEl(event.currentTarget);
+  };
+
+  const handleProfileMenuClose = () => {
+    setProfileAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(clearUser());
+    setShowLoginButton(true); 
+    handleProfileMenuClose();
   };
 
   return (
@@ -201,16 +218,7 @@ const Header = () => {
           </Link>
         </Typography>
 
-        {token ? (
-          <Typography
-            color="inherit"
-            variant="h6"
-            sx={{ fontSize: 16, fontWeight: "medium", mx: 2 }}
-          >
-            { user?.name } 
-            <AccountCircleIcon onClick={handleLoadUser} sx={{ ml: 1 }} />
-          </Typography>
-        ) : (
+        {showLoginButton ? ( // Sử dụng state showLoginButton để điều khiển hiển thị nút Đăng nhập
           <Button
             variant="contained"
             sx={{
@@ -231,6 +239,46 @@ const Header = () => {
               Đăng nhập
             </Link>
           </Button>
+        ) : (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              cursor: "pointer",
+              position: "relative",
+            }}
+          >
+            <Typography
+              color="inherit"
+              variant="h6"
+              sx={{ fontSize: 16, fontWeight: "medium", mx: 2, display: 'flex', alignItems: 'center' }}
+              onClick={handleProfileMenuOpen}
+            >
+              {isLoading ? <CircularProgress size={24} /> : user?.name}
+              <AccountCircleIcon sx={{ ml: 1 }} />
+            </Typography>
+            <Menu
+              sx={{ mt: 3 }}
+              anchorEl={profileAnchorEl}
+              open={Boolean(profileAnchorEl)}
+              onClose={handleProfileMenuClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+            >
+              <MenuItem onClick={handleProfileMenuClose}>
+                Thông tin cá nhân
+              </MenuItem>
+              <MenuItem onClick={handleLogout}>
+                Đăng xuất
+              </MenuItem>
+            </Menu>
+          </Box>
         )}
       </Toolbar>
     </AppBar>
