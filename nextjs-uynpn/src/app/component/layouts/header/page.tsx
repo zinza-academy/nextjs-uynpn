@@ -27,7 +27,7 @@ const Header = () => {
   const token = useSelector((state: RootState) => state.login.token);
   const dispatch: AppDispatch = useDispatch();
   const { user, isLoading, error } = useSelector((state: RootState) => state.user);
-
+ 
   useEffect(() => {
     if (token && !user) {
       dispatch(fetchUser());
@@ -106,7 +106,7 @@ const Header = () => {
           variant="h6"
           sx={{ fontSize: 16, fontWeight: "medium", mx: 2 }}
         >
-          <Link href="/contact" passHref>
+          <Link href="/dashboard/registervaccine" passHref>
             Đăng kí tiêm
           </Link>
         </Typography>

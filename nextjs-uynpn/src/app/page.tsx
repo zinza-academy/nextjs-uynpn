@@ -1,22 +1,17 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import React, { Suspense } from 'react';
-import Header from './component/layouts/header/page';
-import Footer from './component/layouts/footer/page';
+import Link from "next/link";
+import React, { Suspense } from "react";
+import Layout from "../app/component/layouts/Layout";
 
-const LazyHomePage = React.lazy(() => import('../app/dashboard/homepage/page'));
+const LazyHomePage = React.lazy(() => import("../app/dashboard/homepage/page"));
 
 export default function Home() {
   return (
-    <main>
-      <Header />
-
+    <Layout>
       <Suspense fallback={<div>Loading...</div>}>
         <LazyHomePage />
       </Suspense>
-
-      <Footer />
-    </main>
+    </Layout>
   );
 }
