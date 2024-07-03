@@ -8,7 +8,7 @@ import ItemChart from "@/app/component/common/item-chart";
 import { Typography } from "@mui/material";
 import SearchInject from "@/app/component/common/item-searchInjectPoin";
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
   return (
     <Box
       sx={{
@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
         justifyContent: "center",
       }}
     >
-      
+
       <Container
         sx={{ mb: 2, backgroundColor: "#F7FBFE", py: 2, mt: 2 }}
         maxWidth="xl"
@@ -51,19 +51,19 @@ const HomePage: React.FC = () => {
         </Box>
       </Container>
 
-      <Container sx={{ 
-        p: 2, 
-        mt: 2, 
+      <Container sx={{
+        p: 2,
+        mt: 2,
           }} maxWidth="xl">
         <Grid
           container
           spacing={1}
           justifyContent="space-between"
           alignItems="center"
-          sx={{ 
-            mb: 2, 
-            p: 2, 
-            mt: 2, 
+          sx={{
+            mb: 2,
+            p: 2,
+            mt: 2,
             borderRadius: '16px',
             boxShadow: 'none',
             '&': {
@@ -80,19 +80,19 @@ const HomePage: React.FC = () => {
         </Grid>
       </Container>
 
-      <Container sx={{ 
-        mb: 2, 
-        p: 2,  
+      <Container sx={{
+        mb: 2,
+        p: 2,
         }} maxWidth="xl">
         <Grid
           container
           spacing={1}
           justifyContent="space-between"
           alignItems="center"
-          sx={{ 
-            mb: 2, 
-            p: 2, 
-            mt: 2, 
+          sx={{
+            mb: 2,
+            p: 2,
+            mt: 2,
             borderRadius: '16px',
             boxShadow: 'none',
             '&': {
