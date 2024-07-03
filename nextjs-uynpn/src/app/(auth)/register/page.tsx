@@ -7,7 +7,7 @@ import RegisterForm from '@/app/component/form-auth/RegisterForm';
 
 const Register = () => {
   return (
-    <Box
+    <Box 
       sx={{
         display: 'flex',
         height: '180vh',  // Đặt chiều cao cho toàn bộ trang là 100% chiều cao của viewport
