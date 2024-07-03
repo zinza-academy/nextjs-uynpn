@@ -118,7 +118,7 @@ const RegisterVaccine = () => {
           justifyContent: "center",
         }}
       >
-        <Container maxWidth="xl">
+        <Container maxWidth="xl" sx={{marginBottom: 80}}>
           <Box sx={{ mt: 2 }}>
             <Grid container spacing={2}>
               {/* Grid 1 */}
@@ -339,12 +339,7 @@ const RegisterVaccine = () => {
                     >
                       <WestIcon 
                         sx={{ 
-                          color: "#303F9F", 
-                          mr: 2 ,
-                          "&:hover": {
-                          backgroundColor: "#303F9F",
-                          color: "#FFFFFF",
-                          },
+                          mr: 2 
                         }} 
                         />
                        Hủy bỏ
