@@ -13,6 +13,7 @@ import {
   MenuItem,
   Button,
   TextField,
+  FormHelperText
 } from "@mui/material";
 import EastIcon from "@mui/icons-material/East";
 import WestIcon from "@mui/icons-material/West";
@@ -27,12 +28,12 @@ import { RegisterVaccines } from "@/model/RegisterVaccines";
 // Validation schema using yup
 const schema = yup.object().shape({
   priorityGroup: yup.string().required("Nhóm ưu tiên là bắt buộc"),
-  bhyt: yup.string().required("Số thẻ BHYT là bắt buộc"),
-  job: yup.string().required("Nghề nghiệp là bắt buộc"),
-  workplace: yup.string().required("Đơn vị công tác là bắt buộc"),
-  location: yup.string().required("Địa chỉ hiện tại là bắt buộc"),
-  vaccinationDate: yup.date().nullable().required("Ngày muốn được tiêm là bắt buộc"),
-  vaccinationSession: yup.string().required("Buổi tiêm mong muốn là bắt buộc"),
+  bhyt: yup.string(),
+  job: yup.string(),
+  workplace: yup.string(),
+  location: yup.string(),
+  vaccinationDate: yup.date(),
+  vaccinationSession: yup.string(),
 });
 
 const defaultValues: RegisterVaccines = {
@@ -46,7 +47,7 @@ const defaultValues: RegisterVaccines = {
 };
 
 const RegisterVaccine = () => {
-  const { control, handleSubmit } = useForm({
+  const { control, handleSubmit, formState: { errors } } = useForm({
     resolver: yupResolver(schema),
     defaultValues
   });
@@ -158,6 +159,7 @@ const RegisterVaccine = () => {
                         <Controller
                           name="priorityGroup"
                           control={control}
+                          
                           render={({ field }) => (
                             <Select
                               {...field}
@@ -173,6 +175,9 @@ const RegisterVaccine = () => {
                             </Select>
                           )}
                         />
+                        {!!errors.priorityGroup && (
+                          <FormHelperText sx={{ color: 'red' }}>{errors.priorityGroup.message}</FormHelperText>
+                        )}
                       </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
