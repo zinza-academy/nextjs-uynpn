@@ -85,6 +85,7 @@ const RegisterVaccine = () => {
     handleSubmit,
     formState: { errors, isValid },
     setValue,
+    reset,
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues,
@@ -101,8 +102,7 @@ const RegisterVaccine = () => {
   };
 
   const handleBackStep = () => {
-    setActiveStep((prevStep) => prevStep - 1);
-    console.log("quay lại step trước");
+    reset();
   };
 
   return (
@@ -432,7 +432,6 @@ const RegisterVaccine = () => {
                   },
                 }}
                 onClick={handleBackStep}
-                disabled={activeStep === 0}
               >
                 <WestIcon sx={{ mr: 2 }} />
                 Hủy bỏ
