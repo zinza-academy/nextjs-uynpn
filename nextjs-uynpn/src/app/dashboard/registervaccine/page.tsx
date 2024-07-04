@@ -1,4 +1,3 @@
-// RegisterVaccine.tsx
 "use client";
 import React, { useState } from "react";
 import ItemStepper from "@/app/component/common/item-stepper";
@@ -48,12 +47,43 @@ const defaultValues: RegisterVaccines = {
   vaccinationSession: "",
 };
 
+const steps = [
+  "Thông tin người đăng ký tiêm",
+  "Phiếu đồng ý tiêm",
+  "Hoàn thành",
+];
+
+// Fake data for selects
+const priorityGroups = [
+  { id: 1, name: "Nhóm ưu tiên 1" },
+  { id: 2, name: "Nhóm ưu tiên 2" },
+  { id: 3, name: "Nhóm ưu tiên 3" },
+];
+
+const jobs = [
+  { id: 1, name: "Bác sĩ" },
+  { id: 2, name: "Y tá" },
+  { id: 3, name: "Công nhân" },
+];
+
+const workPlaces = [
+  { id: 1, name: "Bệnh viện A" },
+  { id: 2, name: "Cơ quan B" },
+  { id: 3, name: "Xí nghiệp C" },
+];
+
+const locations = [
+  { id: 1, name: "Hà Nội" },
+  { id: 2, name: "TP.HCM" },
+  { id: 3, name: "Đà Nẵng" },
+];
+
 const RegisterVaccine = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
     setValue,
   } = useForm({
     resolver: yupResolver(schema),
@@ -74,37 +104,6 @@ const RegisterVaccine = () => {
     setActiveStep((prevStep) => prevStep - 1);
     console.log("quay lại step trước");
   };
-
-  const steps = [
-    "Thông tin người đăng ký tiêm",
-    "Phiếu đồng ý tiêm",
-    "Hoàn thành",
-  ];
-
-  // Fake data for selects
-  const priorityGroups = [
-    { id: 1, name: "Nhóm ưu tiên 1" },
-    { id: 2, name: "Nhóm ưu tiên 2" },
-    { id: 3, name: "Nhóm ưu tiên 3" },
-  ];
-
-  const jobs = [
-    { id: 1, name: "Bác sĩ" },
-    { id: 2, name: "Y tá" },
-    { id: 3, name: "Công nhân" },
-  ];
-
-  const workPlaces = [
-    { id: 1, name: "Bệnh viện A" },
-    { id: 2, name: "Cơ quan B" },
-    { id: 3, name: "Xí nghiệp C" },
-  ];
-
-  const locations = [
-    { id: 1, name: "Hà Nội" },
-    { id: 2, name: "TP.HCM" },
-    { id: 3, name: "Đà Nẵng" },
-  ];
 
   return (
     <Layout>
@@ -424,7 +423,7 @@ const RegisterVaccine = () => {
                   backgroundColor: "#FFFFFF",
                   color: "#303F9F",
                   mt: 2,
-                  width: "30", 
+                  width: "130px", 
                   height: 36,
                   borderRadius: "5px 5px 5px 0", 
                   "&:hover": {
@@ -449,7 +448,7 @@ const RegisterVaccine = () => {
                   color: "#FFFFFF",
                   mt: 2,
                   ml: 2,
-                  width: "40", 
+                  width: "160px", 
                   height: 36,
                   borderRadius: "5px 5px 5px 0", 
                   "&:hover": {

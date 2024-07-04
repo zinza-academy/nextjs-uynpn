@@ -1,4 +1,3 @@
-// ItemStepper.tsx
 import { Stepper, Step, StepLabel } from "@mui/material";
 
 interface ItemStepperProps {
