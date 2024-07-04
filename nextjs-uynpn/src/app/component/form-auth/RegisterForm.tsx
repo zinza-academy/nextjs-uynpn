@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, Grid, TextField, Typography, Select, MenuItem, FormControl, InputLabel } from '@mui/material';
-import { useRouter } from 'next/navigation'; 
+import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/lib/store';
 import { requestSuccess, sendRequest } from '@/slice/registerSlice';
@@ -75,7 +75,7 @@ const locationData: LocationData = [
 
 const StyledTextField = styled(TextField)({
   width: '200px',
-  
+
 });
 
 const validationSchema = yup.object().shape({
@@ -85,7 +85,7 @@ const validationSchema = yup.object().shape({
   name: yup.string().required('Họ và tên không được để trống'),
   dob: yup.date().required('Ngày sinh không được để trống'),
   gender: yup.string().required('Giới tính không được để trống'),
-  province: yup.string().required('Tỉnh không được để trống'), 
+  province: yup.string().required('Tỉnh không được để trống'),
   district: yup.string().required('Huyện không được để trống'),
   ward: yup.string().required('Xã không được để trống')
 });
@@ -96,7 +96,7 @@ const RegisterForm = () => {
     defaultValues: {
       cmnd: '',
       email: '',
-      password: '', 
+      password: '',
       name: '',
       dob: '',
       gender: '',
@@ -105,7 +105,7 @@ const RegisterForm = () => {
       ward: 0,
     },
   });
-  
+
 
   const [selectedProvince, setSelectedProvince] = useState<string | null>(null);
   const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
@@ -144,7 +144,7 @@ const RegisterForm = () => {
       }
     }
   };
- 
+
   return (
     <Grid
       container
@@ -235,7 +235,7 @@ const RegisterForm = () => {
           Họ và tên <Box component="span" sx={{ color: 'red' }}>(*)</Box>
         </Typography>
         <Controller
-          name="name" 
+          name="name"
           control={control}
           defaultValue=""
           render={({ field }) => (
@@ -266,8 +266,8 @@ const RegisterForm = () => {
               onChange={(date: Dayjs | null) => field.onChange(date ? date.toDate() : null)}
               renderInput={(params: any) => (
                 <StyledTextField
-                  className="fullWidthInput" 
-                  sx={{ paddingRight: '1000' }} 
+                  className="fullWidthInput"
+                  sx={{ paddingRight: '1000' }}
                   fullWidth
                   {...params}
                   error={!!errors.dob}
@@ -279,7 +279,7 @@ const RegisterForm = () => {
         )}
       />
     </Grid>
-      
+
       <Grid item sx={{ width: '100%', mb: 2 }}>
         <Typography className='label-input' variant="body1">
           Giới tính <Box component="span" sx={{ color: 'red' }}>(*)</Box>

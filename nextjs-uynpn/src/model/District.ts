@@ -5,4 +5,4 @@ export interface District {
     name: string;
     provinceId: number;
     wards: Ward[];
-  }
+}

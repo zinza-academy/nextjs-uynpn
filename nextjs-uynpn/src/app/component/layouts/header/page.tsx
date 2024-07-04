@@ -15,24 +15,23 @@ import Image from "next/image";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import EastIcon from "@mui/icons-material/East";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/lib/store";
+import { RootState, AppDispatch, useAppDispatch, useAppSelector } from "@/lib/store"; // Updated import for Redux hooks
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { fetchUser, clearUser } from "@/slice/userSlice";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [profileAnchorEl, setProfileAnchorEl] = useState<null | HTMLElement>(null);
-  const [showLoginButton, setShowLoginButton] = useState<boolean>(false); 
-  const token = useSelector((state: RootState) => state.login.token);
-  const dispatch: AppDispatch = useDispatch();
-  const { user, isLoading, error } = useSelector((state: RootState) => state.user);
- 
+  const [showLoginButton, setShowLoginButton] = useState<boolean>(false);
+  const token = useAppSelector((state: RootState) => state.login.token); // Access token using useAppSelector
+  const dispatch: AppDispatch = useAppDispatch(); // Access dispatch using useAppDispatch
+  const { user, isLoading } = useAppSelector((state) => state.user); // Access user and isLoading using useAppSelector
+
   useEffect(() => {
     if (token && !user) {
       dispatch(fetchUser());
     } else {
-      setShowLoginButton(!token); 
+      setShowLoginButton(!token);
     }
   }, [token, user, dispatch]);
 
@@ -54,7 +53,7 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(clearUser());
-    setShowLoginButton(true); 
+    setShowLoginButton(true);
     handleProfileMenuClose();
   };
 
@@ -106,7 +105,7 @@ const Header = () => {
           variant="h6"
           sx={{ fontSize: 16, fontWeight: "medium", mx: 2 }}
         >
-          <Link href="/dashboard/registervaccine" passHref>
+          <Link href="/contact" passHref>
             Đăng kí tiêm
           </Link>
         </Typography>
@@ -218,7 +217,7 @@ const Header = () => {
           </Link>
         </Typography>
 
-        {showLoginButton ? ( // Sử dụng state showLoginButton để điều khiển hiển thị nút Đăng nhập
+        {showLoginButton ? (
           <Button
             variant="contained"
             sx={{
