@@ -1,7 +1,8 @@
+// RegisterVaccine.tsx
 "use client";
-
+import React, { useState } from "react";
 import ItemStepper from "@/app/component/common/item-stepper";
-import Layout from "../../component/layouts/Layout";
+import Layout from "@/app/component/layouts/Layout";
 import {
   Box,
   Container,
@@ -13,10 +14,9 @@ import {
   MenuItem,
   Button,
   TextField,
-  FormHelperText
+  FormHelperText,
+  colors,
 } from "@mui/material";
-import EastIcon from "@mui/icons-material/East";
-import WestIcon from "@mui/icons-material/West";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
@@ -24,6 +24,8 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { RegisterVaccines } from "@/model/RegisterVaccines";
+import EastIcon from "@mui/icons-material/East";
+import WestIcon from "@mui/icons-material/West";
 
 // Validation schema using yup
 const schema = yup.object().shape({
@@ -47,18 +49,37 @@ const defaultValues: RegisterVaccines = {
 };
 
 const RegisterVaccine = () => {
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const [activeStep, setActiveStep] = useState<number>(0);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm({
     resolver: yupResolver(schema),
-    defaultValues
+    defaultValues,
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Form data:", data);
+  const onSubmit = async (data: RegisterVaccines) => {
+    console.log("data:", data);
+    handleNextStep();
   };
 
-  const handleSearch = () => {
-    console.log("Searching...");
+  const handleNextStep = () => {
+    setActiveStep((prevStep) => prevStep + 1);
+    console.log("step tiếp theo");
   };
+
+  const handleBackStep = () => {
+    setActiveStep((prevStep) => prevStep - 1);
+    console.log("quay lại step trước");
+  };
+
+  const steps = [
+    "Thông tin người đăng ký tiêm",
+    "Phiếu đồng ý tiêm",
+    "Hoàn thành",
+  ];
 
   // Fake data for selects
   const priorityGroups = [
@@ -126,7 +147,7 @@ const RegisterVaccine = () => {
               }}
             >
               <Grid item xs={12} sm={12} md={12}>
-                <ItemStepper />
+                <ItemStepper activeStep={activeStep} steps={steps} />
               </Grid>
             </Grid>
           </Container>
@@ -144,7 +165,7 @@ const RegisterVaccine = () => {
             <Box sx={{ mt: 2 }}>
               <Grid container spacing={2}>
                 <Typography sx={{ ml: 2 }} variant="body1">
-                  1. Thông tin người đăng kí tiêm
+                  1. Thông tin người tiêm
                 </Typography>
                 <Grid item xs={12} sm={12} md={12}>
                   <Grid container spacing={2}>
@@ -159,7 +180,6 @@ const RegisterVaccine = () => {
                         <Controller
                           name="priorityGroup"
                           control={control}
-                          
                           render={({ field }) => (
                             <Select
                               {...field}
@@ -176,7 +196,9 @@ const RegisterVaccine = () => {
                           )}
                         />
                         {!!errors.priorityGroup && (
-                          <FormHelperText sx={{ color: 'red' }}>{errors.priorityGroup.message}</FormHelperText>
+                          <FormHelperText sx={{ color: "red" }}>
+                            {errors.priorityGroup.message}
+                          </FormHelperText>
                         )}
                       </FormControl>
                     </Grid>
@@ -264,11 +286,11 @@ const RegisterVaccine = () => {
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
                       <Typography sx={{ fontWeight: "regular" }}>
-                        Địa chỉ hiện tại
+                        Địa điểm tiêm
                       </Typography>
                       <FormControl fullWidth>
                         <InputLabel id="location-label">
-                          Địa chỉ hiện tại
+                          Địa điểm tiêm
                         </InputLabel>
                         <Controller
                           name="location"
@@ -278,10 +300,13 @@ const RegisterVaccine = () => {
                               {...field}
                               labelId="location-label"
                               id="location"
-                              label="Địa chỉ hiện tại"
+                              label="Địa điểm tiêm"
                             >
                               {locations.map((location) => (
-                                <MenuItem key={location.id} value={location.name}>
+                                <MenuItem
+                                  key={location.id}
+                                  value={location.name}
+                                >
                                   {location.name}
                                 </MenuItem>
                               ))}
@@ -293,38 +318,38 @@ const RegisterVaccine = () => {
                   </Grid>
                 </Grid>
 
-                <Typography sx={{ ml: 2, mt: 3 }} variant="body1">
-                  2. Thông tin đăng kí tiêm chủng
-                </Typography>
+
                 <Grid item xs={12} sm={12} md={12}>
+                <Typography variant="body1" sx={{ mb: 1, mt: 2 }}>
+                  1. Thông tin đăng kí tiêm chủng
+                </Typography>
                   <Grid container spacing={2}>
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={4} md={3}>
                       <Typography sx={{ fontWeight: "regular" }}>
-                        Ngày muốn được tiêm
+                        Ngày tiêm
                       </Typography>
                       <FormControl fullWidth>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
-                          <Controller
-                            name="vaccinationDate"
-                            control={control}
-                            render={({ field }) => (
-                              <DatePicker
-                                {...field}
-                                label="Ngày/Tháng/Năm"
-                                renderInput={(params: any) => <TextField {...params} />}
-                              />
+                          <DatePicker
+                            label="Ngày tiêm"
+                            value={null} // Giá trị này có thể cần điều chỉnh
+                            onChange={(date) =>
+                              setValue("vaccinationDate", date)
+                            }
+                            renderInput={(params: any) => (
+                              <TextField {...params} />
                             )}
                           />
                         </LocalizationProvider>
                       </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={3}>
+                    <Grid item xs={12} sm={4} md={3}>
                       <Typography sx={{ fontWeight: "regular" }}>
-                        Buổi tiêm mong muốn
+                        Buổi tiêm
                       </Typography>
                       <FormControl fullWidth>
                         <InputLabel id="vaccination-session-label">
-                          Buổi tiêm mong muốn
+                          Buổi tiêm
                         </InputLabel>
                         <Controller
                           name="vaccinationSession"
@@ -334,11 +359,10 @@ const RegisterVaccine = () => {
                               {...field}
                               labelId="vaccination-session-label"
                               id="vaccination-session"
-                              label="Buổi tiêm mong muốn"
+                              label="Buổi tiêm"
                             >
-                              <MenuItem value="Sáng">Sáng</MenuItem>
-                              <MenuItem value="Chiều">Chiều</MenuItem>
-                              <MenuItem value="Tối">Tối</MenuItem>
+                              <MenuItem value="Buổi sáng">Buổi sáng</MenuItem>
+                              <MenuItem value="Buổi chiều">Buổi chiều</MenuItem>
                             </Select>
                           )}
                         />
@@ -346,8 +370,10 @@ const RegisterVaccine = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-
-                <Grid item xs={12} sm={12} md={12}>
+              </Grid>
+            </Box>
+            
+            <Grid item xs={12} sm={12} md={12} mt={4}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={6} md={12}>
                     <Typography sx={{ fontWeight: "medium", color: "#D32F2F" }}>
@@ -387,57 +413,55 @@ const RegisterVaccine = () => {
                     </Typography>
                   </Grid>
                 </Grid>
-              </Grid>
+            </Grid>
 
-                <Grid item xs={12} sm={12} md={12}>
-                  <Grid container spacing={2} justifyContent="center">
-                    <Grid item xs={12} sm={6} md={1.3}>
-                      <Button
-                        variant="contained"
-                        sx={{
-                          fontSize: 16,
-                          fontWeight: "medium",
-                          backgroundColor: "#FFFFFF",
-                          color: "#303F9F",
-                          mt: 2,
-                          width: "100%",
-                          height: 36,
-                          borderRadius: "5px 0 0 5px",
-                          "&:hover": {
-                            backgroundColor: "#303F9F",
-                            color: "#FFFFFF",
-                          },
-                        }}
-                        startIcon={<WestIcon sx={{ color: "#303F9F" }} />}
-                      >
-                        Quay lại
-                      </Button>
-                    </Grid>
-                    <Grid item xs={12} sm={3} md={1.3}>
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                          fontSize: 16,
-                          fontWeight: "medium",
-                          backgroundColor: "#303F9F",
-                          color: "#FFFFFF",
-                          mt: 2,
-                          width: "100%",
-                          height: 36,
-                          borderRadius: "5px 5px 5px 0",
-                          "&:hover": {
-                            backgroundColor: "#FFFFFF",
-                            color: "#303F9F",
-                          },
-                        }}
-                      >
-                        Tiếp tục <EastIcon sx={{ color: "#FFFFFF", ml: 2 }} />
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
+            <Box sx={{ mt: 4, display: "flex", justifyContent: "center" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  fontSize: 16,
+                  fontWeight: "medium",
+                  backgroundColor: "#FFFFFF",
+                  color: "#303F9F",
+                  mt: 2,
+                  width: "30", 
+                  height: 36,
+                  borderRadius: "5px 5px 5px 0", 
+                  "&:hover": {
+                    backgroundColor: "#303F9F",
+                    color: "#FFFFFF",
+                  },
+                }}
+                onClick={handleBackStep}
+                disabled={activeStep === 0}
+              >
+                <WestIcon sx={{ mr: 2 }} />
+                Hủy bỏ
+              </Button>
+
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{
+                  fontSize: 16,
+                  fontWeight: "medium",
+                  backgroundColor: "#303F9F",
+                  color: "#FFFFFF",
+                  mt: 2,
+                  ml: 2,
+                  width: "40", 
+                  height: 36,
+                  borderRadius: "5px 5px 5px 0", 
+                  "&:hover": {
+                    backgroundColor: "#FFFFFF",
+                    color: "#303F9F",
+                  },
+                }}
+                onClick={handleNextStep}
+                disabled={activeStep === steps.length - 1}
+              >
+                Tiếp tục <EastIcon sx={{ color: "#FFFFFF", ml: 2 }} />
+              </Button>
             </Box>
           </Container>
         </Box>
