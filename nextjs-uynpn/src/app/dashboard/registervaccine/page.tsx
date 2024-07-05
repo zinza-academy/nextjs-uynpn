@@ -10,9 +10,9 @@ import { RegisterVaccines } from "@/model/RegisterVaccines";
 import EastIcon from "@mui/icons-material/East";
 import WestIcon from "@mui/icons-material/West";
 import RegistrationInfoForm from "@/app/component/common/registrationInfoForm";
-import TabPanel from "@/app/component/common/Tablabel";
 import AgreeInject from "@/app/component/common/agree-inject";
-
+import TabPanel from "@/app/component/common/tablabel";
+import RegisterVaccineTab from "@/constants/RegisterVaccineTab";
 
 // Validation schema using yup
 const schema = yup.object().shape({
@@ -67,8 +67,8 @@ const locations = [
 ];
 
 const RegisterVaccine = () => {
-  const [activeStep, setActiveStep] = useState<number>(0);
-  const [tabIndex, setTabIndex] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState<RegisterVaccineTab>(RegisterVaccineTab.RegistrationInfo);
+  const [tabIndex, setTabIndex] = useState<RegisterVaccineTab>(RegisterVaccineTab.RegistrationInfo);
   const {
     control,
     handleSubmit,
@@ -86,7 +86,7 @@ const RegisterVaccine = () => {
   };
 
   const handleNextStep = () => {
-    if (activeStep < steps.length - 1) {
+    if (activeStep < RegisterVaccineTab.Complete) {
       setActiveStep((prevStep) => prevStep + 1);
     }
     setTabIndex((prevIndex) => prevIndex + 1);
@@ -117,8 +117,8 @@ const RegisterVaccine = () => {
 
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
           <Container maxWidth="xl" sx={{ marginBottom: 80 }}>
-            {tabIndex === 0 && (
-              <TabPanel value={tabIndex} index={0}>
+            {tabIndex === RegisterVaccineTab.RegistrationInfo && (
+              <TabPanel value={tabIndex} index={RegisterVaccineTab.RegistrationInfo}>
                 <RegistrationInfoForm
                   control={control}
                   errors={errors}
@@ -131,8 +131,8 @@ const RegisterVaccine = () => {
               </TabPanel>
             )}
 
-            {tabIndex === 1 && (
-              <TabPanel value={tabIndex} index={1}>
+            {tabIndex === RegisterVaccineTab.AgreeInject && (
+              <TabPanel value={tabIndex} index={RegisterVaccineTab.AgreeInject}>
                 <Box sx={{ display: "flex", flexDirection: "column"}}>
                   <AgreeInject />
                 </Box>
@@ -180,7 +180,7 @@ const RegisterVaccine = () => {
                     color: "#303F9F",
                   },
                 }}
-                disabled={activeStep === steps.length - 1}
+                disabled={activeStep === RegisterVaccineTab.Complete}
               >
                 Tiếp tục <EastIcon sx={{ color: "#FFFFFF", ml: 2 }} />
               </Button>
