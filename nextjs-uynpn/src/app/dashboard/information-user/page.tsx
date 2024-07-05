@@ -13,6 +13,7 @@ import {
   TableCell,
   Paper,
   Divider,
+  Button,
 } from "@mui/material";
 import Image from "next/image";
 
@@ -41,6 +42,9 @@ const InformationUser = () => {
     },
   ];
 
+  const vaccineCount = rows.length;
+  const backgroundColor = vaccineCount >= 2 ? "#43A047" : "#FFD700";
+
   return (
     <Layout>
       <Box
@@ -49,7 +53,7 @@ const InformationUser = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          marginBottom: "1000px",
+          marginBottom: "500px",
         }}
       >
         <Container sx={{ mb: 2, py: 2, height: 64 }} maxWidth="xl">
@@ -157,12 +161,40 @@ const InformationUser = () => {
                   </Table>
                 </TableContainer>
               </Grid>
+              <Grid item xs={12} sm={12} sx={{ mt: 5 }} textAlign={"center"}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "medium",
+                    backgroundColor: "#303F9F",
+                    color: "#FFFFFF",
+                    mt: 2,
+                    ml: 2,
+                    width: "auto",
+                    height: 36,
+                    borderRadius: "5px 5px 5px 0",
+                    "&:hover": {
+                      backgroundColor: "#FFFFFF",
+                      color: "#303F9F",
+                    },
+                  }}
+                >
+                  Đăng kí mũi tiêm tiếp theo
+                </Button>
+              </Grid>
             </Grid>
             <Grid
               container
               xs={12}
               sm={2.8}
-              sx={{ backgroundColor: "#43A047", mt: 2, borderRadius: "10px", height: "700px" }}
+              sx={{
+                backgroundColor: backgroundColor,
+                mt: 2,
+                borderRadius: "10px",
+                height: "700px",
+              }}
             >
               <Grid
                 xs={12}
@@ -171,7 +203,14 @@ const InformationUser = () => {
                 container
                 justifyContent="center"
               >
-                <Grid item xs={12} sm={12} sx={{ mt: 3 }} container justifyContent={"center"}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  sx={{ mt: 3 }}
+                  container
+                  justifyContent={"center"}
+                >
                   <Image
                     src="/img/logo_byt.png"
                     alt="Check Circle"
@@ -179,10 +218,26 @@ const InformationUser = () => {
                     height={100}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} sx={{ mt: 3 }} container justifyContent={"center"}>
-                  <Typography variant="h5" sx={{ color: "white" }}>ĐÃ TIÊM 2 MŨI VẮC XIN</Typography>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  sx={{ mt: 3 }}
+                  container
+                  justifyContent={"center"}
+                >
+                  <Typography variant="h5" sx={{ color: "white" }}>
+                    ĐÃ TIÊM 2 MŨI VẮC XIN
+                  </Typography>
                 </Grid>
-                <Grid item xs={12} sm={12} sx={{ mt: 3 }} container justifyContent={"center"}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={12}
+                  sx={{ mt: 3 }}
+                  container
+                  justifyContent={"center"}
+                >
                   <Image
                     src="/img/qr.png"
                     alt="Check Circle"
@@ -190,12 +245,90 @@ const InformationUser = () => {
                     height={196}
                   />
                 </Grid>
-                <Grid item xs={12} sm={12} sx={{ mt: 3}} container justifyContent={"center"}>
-                      <Box sx={{backgroundColor: "#FFFFFF", width:"292px", height: "220px"}}>
-
-                      </Box>
+                <Grid
+                  xs={12}
+                  sm={12}
+                  sx={{ mt: 3 }}
+                  container
+                  justifyContent="center"
+                >
+<Box
+                      sx={{
+                        width: "292px",
+                        height: "220px",
+                        backgroundColor: "white",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 1,
+                        boxShadow: 3,
+                        padding: 2,
+                      }}
+                    >
+                      <Grid container xs={12} sm={12} sx={{}}>
+                        <Grid container xs={12} sm={12}>
+                          <Grid item xs={12} sm={2}>
+                            <Image
+                              src="/img/person.png"
+                              alt="Check Circle"
+                              width={24}
+                              height={24}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={10}>
+                            <Typography variant="body1">Họ và tên</Typography>
+                            <Typography
+                              variant="body1"
+                              sx={{ fontWeight: "600" }}
+                            >
+                              Phạm Ngọc Uyn
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid container xs={12} sm={12}>
+                          <Grid item xs={12} sm={2}>
+                            <Image
+                              src="/img/date_range.png"
+                              alt="Check Circle"
+                              width={24}
+                              height={24}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={10}>
+                            <Typography variant="body1">Ngày sinh</Typography>
+                            <Typography
+                              variant="body1"
+                              sx={{ fontWeight: "600" }}
+                            >
+                              16/10/1999
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                        <Grid container xs={12} sm={12}>
+                          <Grid item xs={12} sm={2}>
+                            <Image
+                              src="/img/featured_video.png"
+                              alt="Check Circle"
+                              width={24}
+                              height={24}
+                            />
+                          </Grid>
+                          <Grid item xs={12} sm={10}>
+                            <Typography variant="body1">
+                              Số CMND/CCCD
+                            </Typography>
+                            <Typography
+                              variant="body1"
+                              sx={{ fontWeight: "600" }}
+                            >
+                              030012345678
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    </Box>
                 </Grid>
-
               </Grid>
             </Grid>
           </Grid>
