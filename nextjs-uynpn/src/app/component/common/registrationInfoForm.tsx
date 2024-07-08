@@ -47,9 +47,7 @@ const RegistrationInfoForm: React.FC<RegistrationInfoFormProps> = ({
                 Nhóm ưu tiên <span>(*)</span>
               </Typography>
               <FormControl fullWidth>
-                <InputLabel id="priority-group-label">
-                  Nhóm ưu tiên
-                </InputLabel>
+                <InputLabel id="priority-group-label">Nhóm ưu tiên</InputLabel>
                 <Controller
                   name="priorityGroup"
                   control={control}
@@ -104,7 +102,9 @@ const RegistrationInfoForm: React.FC<RegistrationInfoFormProps> = ({
         <Grid item xs={12} sm={12} md={12}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={4} md={3}>
-              <Typography sx={{ fontWeight: "regular" }}>Nghề nghiệp</Typography>
+              <Typography sx={{ fontWeight: "regular" }}>
+                Nghề nghiệp
+              </Typography>
               <FormControl fullWidth>
                 <InputLabel id="job-label">Nghề nghiệp</InputLabel>
                 <Controller
@@ -154,7 +154,9 @@ const RegistrationInfoForm: React.FC<RegistrationInfoFormProps> = ({
               </FormControl>
             </Grid>
             <Grid item xs={12} sm={4} md={3}>
-              <Typography sx={{ fontWeight: "regular" }}>Địa điểm tiêm</Typography>
+              <Typography sx={{ fontWeight: "regular" }}>
+                Địa điểm tiêm
+              </Typography>
               <FormControl fullWidth>
                 <InputLabel id="location-label">Địa điểm tiêm</InputLabel>
                 <Controller
@@ -191,7 +193,7 @@ const RegistrationInfoForm: React.FC<RegistrationInfoFormProps> = ({
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
                     label="Ngày tiêm"
-                    value={null} 
+                    value={null}
                     onChange={(date) => setValue("vaccinationDate", date)}
                     renderInput={(params: any) => <TextField {...params} />}
                   />
@@ -201,7 +203,9 @@ const RegistrationInfoForm: React.FC<RegistrationInfoFormProps> = ({
             <Grid item xs={12} sm={4} md={3}>
               <Typography sx={{ fontWeight: "regular" }}>Buổi tiêm</Typography>
               <FormControl fullWidth>
-                <InputLabel id="vaccination-session-label">Buổi tiêm</InputLabel>
+                <InputLabel id="vaccination-session-label">
+                  Buổi tiêm
+                </InputLabel>
                 <Controller
                   name="vaccinationSession"
                   control={control}
@@ -219,6 +223,41 @@ const RegistrationInfoForm: React.FC<RegistrationInfoFormProps> = ({
                 />
               </FormControl>
             </Grid>
+          </Grid>
+        </Grid>
+      </Grid>
+ 
+      <Grid item xs={12} sm={12} md={12} mt={4}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={12}>
+            <Typography sx={{ fontWeight: "medium", color: "#D32F2F" }}>
+              Lưu ý
+            </Typography>
+            <Typography
+              sx={{
+                fontWeight: "regular",
+                color: "#D32F2F",
+                ml: 1,
+                mt: 2,
+              }}
+            >
+              Việc đăng ký thông tin hoàn toàn bảo mật và phục vụ cho chiến dịch
+              tiêm chủng Vắc xin COVID - 19
+            </Typography>
+            <Typography sx={{ fontWeight: "regular", color: "#D32F2F", ml: 1 }}>
+              Xin vui lòng kiểm tra kỹ các thông tin bắt buộc(VD: Họ và tên,
+              Ngày tháng năm sinh, Số điện thoại, Số CMND/CCCD/Mã định danh công
+              dân/HC ...)
+            </Typography>
+            <Typography sx={{ fontWeight: "regular", color: "#D32F2F", ml: 1 }}>
+              Bằng việc nhấn nút xác nhận, bạn hoàn toàn hiểu và đồng ý chịu
+              trách nhiệm với các thông tin đã cung cấp.
+            </Typography>
+            <Typography sx={{ fontWeight: "regular", color: "#D32F2F", ml: 1 }}>
+              Cá nhân/Tổ chức đăng ký thành công trên hệ thống sẽ được đưa vào
+              danh sách đặt tiêm. Cơ sở y tế sẽ thông báo lịch tiêm khi có vắc
+              xin và kế hoạch tiêm được phê duyệt. Trân trọng cảm ơn!
+            </Typography>
           </Grid>
         </Grid>
       </Grid>
