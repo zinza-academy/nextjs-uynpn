@@ -191,7 +191,7 @@ const InformationUser = () => {
                 xs={12}
                 sm={2.8}
                 sx={{
-                  backgroundColor: "#43A047",
+                  backgroundColor: rows.length > 2 ? "#43A047" : "#FFEB3B",
                   mt: 2,
                   borderRadius: "10px",
                   height: "700px",
