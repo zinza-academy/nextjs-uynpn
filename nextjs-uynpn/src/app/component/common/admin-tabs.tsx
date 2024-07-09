@@ -13,6 +13,7 @@ const AdminTabs: React.FC<Props> = ({ value, onChange }) => {
       <Tabs value={value} onChange={onChange} aria-label="navigation tabs">
         <Tab label="Điểm tiêm" component={Link} href="/admin/location-inject" />
         <Tab label="Đăng kí" component={Link} href="/admin/register-inject" />
+        <Tab label="Tài khoản" component={Link} href="/admin/account" />
         <Tab label="Tài liệu" />
       </Tabs>
       <Divider sx={{ height: 4, backgroundColor: "#EEEEEE" }} />

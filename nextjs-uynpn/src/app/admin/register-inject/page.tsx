@@ -108,7 +108,7 @@ const RegisterInject = () => {
   };
 
   const onSubmitSearch: SubmitHandler<FormValuesSearch> = (data) => {
-    // Implement search logic here
+
   };
 
   const getStatusText = (status: string): string => {
@@ -126,7 +126,7 @@ const RegisterInject = () => {
     const updatedRows = rows.map((row) =>
       row.id === id ? { ...row, status: newStatus } : row
     );
-    // Update your state or backend with updatedRows
+    
   };
 
   const handleRowClick = (id: number) => {
