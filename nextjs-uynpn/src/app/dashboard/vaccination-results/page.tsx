@@ -17,11 +17,11 @@ import {
   Paper,
 } from "@mui/material";
 import { VaccintionResults } from "@/model/VaccineResults";
-import { TrangThai } from "@/constants/status-register"; 
+import { TrangThai } from "@/constants/status-register";
 
 const rows: VaccintionResults[] = [
   {
-    stt: 1,
+    id: 1,
     fullName: "Nguyễn Văn A",
     dob: "01/01/1990",
     gender: "Nam",
@@ -29,7 +29,7 @@ const rows: VaccintionResults[] = [
     status: "1",
   },
   {
-    stt: 2,
+    id: 2,
     fullName: "Trần Thị B",
     dob: "02/02/1995",
     gender: "Nữ",
@@ -37,7 +37,7 @@ const rows: VaccintionResults[] = [
     status: "1",
   },
   {
-    stt: 3,
+    id: 3,
     fullName: "Phạm Đình C",
     dob: "03/03/1985",
     gender: "Nam",
@@ -94,8 +94,8 @@ const VaccineResults = () => {
                   </TableHead>
                   <TableBody>
                     {rows.map((row) => (
-                      <TableRow key={row.stt}>
-                        <TableCell align="center">{row.stt}</TableCell>
+                      <TableRow key={row.id}>
+                        <TableCell align="center">{row.id}</TableCell>
                         <TableCell align="center">{row.fullName}</TableCell>
                         <TableCell align="center">{row.dob}</TableCell>
                         <TableCell align="center">{row.gender}</TableCell>

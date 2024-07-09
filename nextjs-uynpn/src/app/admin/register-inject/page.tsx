@@ -31,7 +31,7 @@ interface FormValuesSearch {
 
 const rows: VaccintionResults[] = [
     {
-      "stt": 1,
+      "id": 1,
       "fullName": "Nguyễn Văn A",
       "dob": "01/01/1990",
       "gender": "Nam",
@@ -39,7 +39,7 @@ const rows: VaccintionResults[] = [
       "status": "1"
     },
     {
-      "stt": 2,
+      "id": 2,
       "fullName": "Trần Thị B",
       "dob": "02/02/1995",
       "gender": "Nữ",
@@ -47,7 +47,7 @@ const rows: VaccintionResults[] = [
       "status": "1"
     },
     {
-      "stt": 3,
+      "id": 3,
       "fullName": "Lê Hoàng C",
       "dob": "03/03/1985",
       "gender": "Khác",
@@ -55,7 +55,7 @@ const rows: VaccintionResults[] = [
       "status": "2"
     },
     {
-      "stt": 4,
+      "id": 4,
       "fullName": "Phạm Minh D",
       "dob": "04/04/1992",
       "gender": "Chưa xác định",
@@ -63,14 +63,13 @@ const rows: VaccintionResults[] = [
       "status": "2"
     },
     {
-      "stt": 5,
+      "id": 5,
       "fullName": "Vũ Thị E",
       "dob": "05/05/1988",
       "gender": "Không xác định",
       "idNumber": "789456123",
       "status": "1"
     }
-
 ];
 
 const RegisterInject = () => {
@@ -102,9 +101,7 @@ const RegisterInject = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-
   const onSubmitSearch: SubmitHandler<FormValuesSearch> = (data) => {
-
   };
 
   const getStatusText = (status: string): string => {
@@ -120,7 +117,7 @@ const RegisterInject = () => {
 
   const handleStatusChange = (id: number, newStatus: string) => {
     const updatedRows = rows.map((row) =>
-      row.stt === id ? { ...row, trangThai: newStatus } : row
+      row.id === id ? { ...row, trangThai: newStatus } : row
     );
   };
 
@@ -193,8 +190,8 @@ const RegisterInject = () => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.stt}>
-                  <TableCell align="center">{row.stt}</TableCell>
+                <TableRow key={row.id}>
+                  <TableCell align="center">{row.id}</TableCell>
                   <TableCell align="center">{row.fullName}</TableCell>
                   <TableCell align="center">{row.dob}</TableCell>
                   <TableCell align="center">{row.gender}</TableCell>
@@ -203,7 +200,7 @@ const RegisterInject = () => {
                     <Select
                       value={row.status}
                       onChange={(e) =>
-                        handleStatusChange(row.stt, e.target.value as string)
+                        handleStatusChange(row.id, e.target.value as string)
                       }
                       sx={{ minWidth: 120 }}
                     >
