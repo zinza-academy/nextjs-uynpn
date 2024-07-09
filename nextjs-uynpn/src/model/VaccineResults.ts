@@ -7,3 +7,4 @@ export interface VaccintionResults {
   status: string;
 }
 
+ 

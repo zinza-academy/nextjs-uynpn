@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React, { useState } from "react";
 import Layout from "@/app/component/layouts/Layout";
 import NavigationTabs from "@/app/component/common/navigation-tabs";
@@ -17,6 +17,7 @@ import {
   Paper,
 } from "@mui/material";
 import { VaccintionResults } from "@/model/VaccineResults";
+import { TrangThai } from "@/constants/status-register"; 
 
 const rows: VaccintionResults[] = [
   {
@@ -25,7 +26,7 @@ const rows: VaccintionResults[] = [
     dob: "01/01/1990",
     gender: "Nam",
     idNumber: "123456789",
-    status: "Đã đăng kí",
+    status: "1",
   },
   {
     stt: 2,
@@ -33,7 +34,7 @@ const rows: VaccintionResults[] = [
     dob: "02/02/1995",
     gender: "Nữ",
     idNumber: "987654321",
-    status: "Đã đăng kí",
+    status: "1",
   },
   {
     stt: 3,
@@ -41,12 +42,13 @@ const rows: VaccintionResults[] = [
     dob: "03/03/1985",
     gender: "Nam",
     idNumber: "456123789",
-    status: "Đã đăng kí",
+    status: "1",
   },
 ];
 
 const VaccineResults = () => {
   const [value, setValue] = useState<number>(1);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -99,7 +101,7 @@ const VaccineResults = () => {
                         <TableCell align="center">{row.gender}</TableCell>
                         <TableCell align="center">{row.idNumber}</TableCell>
                         <TableCell align="center">
-                          {row.status === "Đã đăng kí" ? (
+                          {row.status === "1" ? (
                             <Button
                               variant="contained"
                               sx={{
