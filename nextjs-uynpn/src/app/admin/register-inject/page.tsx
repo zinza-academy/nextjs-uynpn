@@ -18,6 +18,10 @@ import {
   Typography,
   Select,
   MenuItem,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import AdminTabs from "@/app/component/common/admin-tabs";
@@ -30,54 +34,55 @@ interface FormValuesSearch {
 }
 
 const rows: VaccintionResults[] = [
-    {
-      "id": 1,
-      "fullName": "Nguyễn Văn A",
-      "dob": "01/01/1990",
-      "gender": "Nam",
-      "idNumber": "123456789",
-      "status": "1"
-    },
-    {
-      "id": 2,
-      "fullName": "Trần Thị B",
-      "dob": "02/02/1995",
-      "gender": "Nữ",
-      "idNumber": "987654321",
-      "status": "1"
-    },
-    {
-      "id": 3,
-      "fullName": "Lê Hoàng C",
-      "dob": "03/03/1985",
-      "gender": "Khác",
-      "idNumber": "456789123",
-      "status": "2"
-    },
-    {
-      "id": 4,
-      "fullName": "Phạm Minh D",
-      "dob": "04/04/1992",
-      "gender": "Chưa xác định",
-      "idNumber": "654321987",
-      "status": "2"
-    },
-    {
-      "id": 5,
-      "fullName": "Vũ Thị E",
-      "dob": "05/05/1988",
-      "gender": "Không xác định",
-      "idNumber": "789456123",
-      "status": "1"
-    }
+  {
+    id: 1,
+    fullName: "Nguyễn Văn A",
+    dob: "01/01/1990",
+    gender: "Nam",
+    idNumber: "123456789",
+    status: "1",
+  },
+  {
+    id: 2,
+    fullName: "Trần Thị B",
+    dob: "02/02/1995",
+    gender: "Nữ",
+    idNumber: "987654321",
+    status: "1",
+  },
+  {
+    id: 3,
+    fullName: "Lê Hoàng C",
+    dob: "03/03/1985",
+    gender: "Khác",
+    idNumber: "456789123",
+    status: "2",
+  },
+  {
+    id: 4,
+    fullName: "Phạm Minh D",
+    dob: "04/04/1992",
+    gender: "Chưa xác định",
+    idNumber: "654321987",
+    status: "2",
+  },
+  {
+    id: 5,
+    fullName: "Vũ Thị E",
+    dob: "05/05/1988",
+    gender: "Không xác định",
+    idNumber: "789456123",
+    status: "1",
+  },
 ];
 
 const RegisterInject = () => {
   const [value, setValue] = useState(1);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [open, setOpen] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<VaccintionResults | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedUser, setSelectedUser] =
+    useState<VaccintionResults | null>(null);
   const {
     register: registerSearch,
     handleSubmit: handleSubmitSearch,
@@ -101,7 +106,9 @@ const RegisterInject = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   const onSubmitSearch: SubmitHandler<FormValuesSearch> = (data) => {
+    // Implement search logic here
   };
 
   const getStatusText = (status: string): string => {
@@ -117,8 +124,19 @@ const RegisterInject = () => {
 
   const handleStatusChange = (id: number, newStatus: string) => {
     const updatedRows = rows.map((row) =>
-      row.id === id ? { ...row, trangThai: newStatus } : row
+      row.id === id ? { ...row, status: newStatus } : row
     );
+    // Update your state or backend with updatedRows
+  };
+
+  const handleRowClick = (id: number) => {
+    const clickedUser = rows.find((row) => row.id === id);
+    setSelectedUser(clickedUser || null);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
   return (
@@ -190,9 +208,9 @@ const RegisterInject = () => {
                   )
                 : rows
               ).map((row) => (
-                <TableRow key={row.id}>
+                <TableRow key={row.id} >
                   <TableCell align="center">{row.id}</TableCell>
-                  <TableCell align="center">{row.fullName}</TableCell>
+                  <TableCell align="center" onClick={() => handleRowClick(row.id)}>{row.fullName}</TableCell>
                   <TableCell align="center">{row.dob}</TableCell>
                   <TableCell align="center">{row.gender}</TableCell>
                   <TableCell align="center">{row.idNumber}</TableCell>
@@ -229,6 +247,32 @@ const RegisterInject = () => {
           sx={{ mt: 2 }}
         />
       </Container>
+
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth= {"sm"}>
+        <DialogTitle>Chi tiết người dùng</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">
+            Họ và tên: {selectedUser?.fullName}
+          </Typography>
+          <Typography variant="body1">
+            Ngày sinh: {selectedUser?.dob}
+          </Typography>
+          <Typography variant="body1">
+            Giới tính: {selectedUser?.gender}
+          </Typography>
+          <Typography variant="body1">
+            Số CMND/CCCD: {selectedUser?.idNumber}
+          </Typography>
+          <Typography variant="body1">
+            Trạng thái: {getStatusText(selectedUser?.status || "")}
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Đóng
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Layout>
   );
 };
