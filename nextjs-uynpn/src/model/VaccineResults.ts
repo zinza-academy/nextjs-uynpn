@@ -1,5 +1,5 @@
 export interface VaccintionResults {
-  stt: number;
+  id: number;
   fullName: string;
   dob: string;
   gender: string;

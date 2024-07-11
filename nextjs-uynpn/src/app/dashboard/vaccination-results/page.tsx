@@ -1,4 +1,4 @@
-"use client";
+'use client'
 import React, { useState } from "react";
 import Layout from "@/app/component/layouts/Layout";
 import NavigationTabs from "@/app/component/common/navigation-tabs";
@@ -17,36 +17,38 @@ import {
   Paper,
 } from "@mui/material";
 import { VaccintionResults } from "@/model/VaccineResults";
+import { StatusRegister } from "@/constants/status-register";
 
 const rows: VaccintionResults[] = [
   {
-    stt: 1,
+    id: 1,
     fullName: "Nguyễn Văn A",
     dob: "01/01/1990",
     gender: "Nam",
     idNumber: "123456789",
-    status: "Đã đăng kí",
+    status: "2",
   },
   {
-    stt: 2,
+    id: 2,
     fullName: "Trần Thị B",
     dob: "02/02/1995",
     gender: "Nữ",
     idNumber: "987654321",
-    status: "Đã đăng kí",
+    status: "2",
   },
   {
-    stt: 3,
+    id: 3,
     fullName: "Phạm Đình C",
     dob: "03/03/1985",
     gender: "Nam",
     idNumber: "456123789",
-    status: "Đã đăng kí",
+    status: "2",
   },
 ];
 
 const VaccineResults = () => {
   const [value, setValue] = useState<number>(1);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -92,14 +94,14 @@ const VaccineResults = () => {
                   </TableHead>
                   <TableBody>
                     {rows.map((row) => (
-                      <TableRow key={row.stt}>
-                        <TableCell align="center">{row.stt}</TableCell>
+                      <TableRow key={row.id}>
+                        <TableCell align="center">{row.id}</TableCell>
                         <TableCell align="center">{row.fullName}</TableCell>
                         <TableCell align="center">{row.dob}</TableCell>
                         <TableCell align="center">{row.gender}</TableCell>
                         <TableCell align="center">{row.idNumber}</TableCell>
                         <TableCell align="center">
-                          {row.status === "Đã đăng kí" ? (
+                          {row.status === StatusRegister.approved ? (
                             <Button
                               variant="contained"
                               sx={{
@@ -137,6 +139,11 @@ const VaccineResults = () => {
                                   lg: "100%",
                                 },
                                 height: { xs: "30px", sm: "24px" },
+                                backgroundColor: "#E8EAF6",
+                                border: "1px solid #3F51B5",
+                                borderRadius: "15px",
+                                color: "#000000",
+                                fontWeight: "regular",
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",
