@@ -26,7 +26,7 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import AdminTabs from "@/app/component/common/admin-tabs";
 import { VaccintionResults } from "@/model/VaccineResults";
-import { TrangThai } from "@/constants/status-register";
+import { StatusRegister } from "@/constants/status-register";
 
 interface FormValuesSearch {
   hoVaTen: string;
@@ -113,9 +113,9 @@ const RegisterInject = () => {
 
   const getStatusText = (status: string): string => {
     switch (status) {
-      case TrangThai.DangChoDuyet:
+      case StatusRegister.pending:
         return "Đang chờ duyệt";
-      case TrangThai.DaDuyet:
+      case StatusRegister.approved:
         return "Đã duyệt";
       default:
         return "Không xác định";
@@ -126,7 +126,7 @@ const RegisterInject = () => {
     const updatedRows = rows.map((row) =>
       row.id === id ? { ...row, status: newStatus } : row
     );
-    
+
   };
 
   const handleRowClick = (id: number) => {
@@ -222,11 +222,11 @@ const RegisterInject = () => {
                       }
                       sx={{ minWidth: 120 }}
                     >
-                      <MenuItem value={TrangThai.DangChoDuyet}>
-                        {getStatusText(TrangThai.DangChoDuyet)}
+                      <MenuItem value={StatusRegister.pending}>
+                        {getStatusText(StatusRegister.pending)}
                       </MenuItem>
-                      <MenuItem value={TrangThai.DaDuyet}>
-                        {getStatusText(TrangThai.DaDuyet)}
+                      <MenuItem value={StatusRegister.approved}>
+                        {getStatusText(StatusRegister.approved)}
                       </MenuItem>
                     </Select>
                   </TableCell>

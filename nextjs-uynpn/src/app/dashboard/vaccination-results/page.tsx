@@ -17,7 +17,7 @@ import {
   Paper,
 } from "@mui/material";
 import { VaccintionResults } from "@/model/VaccineResults";
-import { TrangThai } from "@/constants/status-register";
+import { StatusRegister } from "@/constants/status-register";
 
 const rows: VaccintionResults[] = [
   {
@@ -26,7 +26,7 @@ const rows: VaccintionResults[] = [
     dob: "01/01/1990",
     gender: "Nam",
     idNumber: "123456789",
-    status: "1",
+    status: "2",
   },
   {
     id: 2,
@@ -34,7 +34,7 @@ const rows: VaccintionResults[] = [
     dob: "02/02/1995",
     gender: "Nữ",
     idNumber: "987654321",
-    status: "1",
+    status: "2",
   },
   {
     id: 3,
@@ -42,7 +42,7 @@ const rows: VaccintionResults[] = [
     dob: "03/03/1985",
     gender: "Nam",
     idNumber: "456123789",
-    status: "1",
+    status: "2",
   },
 ];
 
@@ -101,7 +101,7 @@ const VaccineResults = () => {
                         <TableCell align="center">{row.gender}</TableCell>
                         <TableCell align="center">{row.idNumber}</TableCell>
                         <TableCell align="center">
-                          {row.status === "1" ? (
+                          {row.status === StatusRegister.approved ? (
                             <Button
                               variant="contained"
                               sx={{
@@ -139,6 +139,11 @@ const VaccineResults = () => {
                                   lg: "100%",
                                 },
                                 height: { xs: "30px", sm: "24px" },
+                                backgroundColor: "#E8EAF6",
+                                border: "1px solid #3F51B5",
+                                borderRadius: "15px",
+                                color: "#000000",
+                                fontWeight: "regular",
                                 whiteSpace: "nowrap",
                                 overflow: "hidden",
                                 textOverflow: "ellipsis",

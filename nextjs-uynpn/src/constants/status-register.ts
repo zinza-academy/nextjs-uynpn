@@ -1,4 +1,4 @@
-export enum TrangThai {
-  DangChoDuyet = "1",
-  DaDuyet = "2",
+export enum StatusRegister {
+  pending = "1",
+  approved = "2",
 }
