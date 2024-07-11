@@ -172,7 +172,7 @@ const Account = () => {
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
-  };
+  }; 
 
   const handlePageChange = (
     event: React.MouseEvent<HTMLButtonElement> | null,
