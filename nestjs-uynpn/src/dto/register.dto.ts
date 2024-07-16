@@ -1,18 +1,18 @@
 import {
   IsString,
-  IsOptional,
   IsEmail,
-  IsNumber,
-  IsDateString,
   IsNotEmpty,
   Matches,
+  MinLength,
+  MaxLength,
+  IsDate,
+  IsEnum,
+  IsInt,
+  IsPositive,
 } from "class-validator";
-import { Transform } from 'class-transformer';
-import { validateAndParseNumber } from "src/utils/validator";
-
+import { Transform, Type } from 'class-transformer';
+import { Gender } from "src/enums/gender.enum";
 export class RegisterDTO {
-
-  id: number;
 
   @IsEmail({}, { message: "Invalid email format." })
   @IsNotEmpty({ message: "Email is required." })
@@ -20,6 +20,9 @@ export class RegisterDTO {
 
   @IsString({ message: "Password must be a string." })
   @IsNotEmpty({ message: "Password is required." })
+  @MinLength(8, { message: "Password must be at least 8 characters long." })
+  @MaxLength(20, { message: "Password cannot be longer than 20 characters." })
+  @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/, { message: "Password must contain both letters and numbers." })
   password: string;
 
   @IsString({ message: "CMND must be a string." })
@@ -29,25 +32,31 @@ export class RegisterDTO {
 
   @IsString({ message: "Name must be a string." })
   @IsNotEmpty({ message: "Name is required." })
+  @MinLength(8, { message: "Name must be at least 8 characters long." })
+  @MaxLength(30, { message: "Name cannot be longer than 20 characters." })
   name: string;
 
-  @IsString({ message: "Invalid date format for Date of Birth." })
   @IsNotEmpty({ message: "Date of Birth is required." })
-  dob: string;
+  @Type(() => Date)
+  @IsDate({ message: "Invalid date format for Date of Birth." })
+  dob: Date;
 
   @IsString({ message: "Gender must be a string." })
-  @IsNotEmpty({ message: "Gender is required." })
-  gender: string;
+  @IsEnum(Gender, { message: "Gender must be either 'male' or 'female'." })
+  gender: Gender;
 
-  @IsNotEmpty()
-  @IsNumber({}, { message: "Province must be a number." })
-  province: number;
+  @IsNotEmpty({ message: "Province ID is required." })
+  @IsInt({ message: "Province ID must be an integer." })
+  @IsPositive({ message: "Province ID must be a positive integer." })
+  province_id: number;
 
-  @IsNotEmpty()
-  @IsNumber({}, { message: "District must be a number." })
-  district: number;
+  @IsNotEmpty({ message: "District ID is required." })
+  @IsInt({ message: "District ID must be an integer." })
+  @IsPositive({ message: "District ID must be a positive integer." })
+  district_id: number;
 
-  @IsNotEmpty()
-  @IsNumber({}, { message: "Ward must be a number." })
-  ward: number;
+  @IsNotEmpty({ message: "Ward ID is required." })
+  @IsInt({ message: "Ward ID must be an integer." })
+  @IsPositive({ message: "Ward ID must be a positive integer." })
+  ward_id: number;
 }

@@ -8,17 +8,15 @@ import { RegisterDTO } from 'src/dto/register.dto';
 
 
 
-@Controller('v1/auth')
+@Controller('v1/users')
 
 export class AuthController {
 
     constructor(
         private readonly authService: AuthService
-    ) {
+    ) { }
 
-    }
-
-    @Get('users') 
+    @Get() 
     async getUser(): Promise<ResponseData<Register[]>> {
         try {
             const users = await this.authService.getUser();
@@ -28,7 +26,7 @@ export class AuthController {
         }
     }
 
-    @Post('user')
+    @Post()
     async createUser(@Body(new ValidationPipe) createUserDto: RegisterDTO): Promise<ResponseData<RegisterDTO>> {
         try {
             const createdUser = await this.authService.createOrUpdateUser(createUserDto);
@@ -38,7 +36,7 @@ export class AuthController {
         }
     }
 
-    @Put('user/:id')
+    @Put(':id')
     async updateUser(
         @Param('id') id: string,
         @Body(new ValidationPipe) updateUserDto: RegisterDTO
@@ -55,7 +53,7 @@ export class AuthController {
         }
     }
 
-    @Delete('delete/:id')
+    @Delete(':id')
     async deleteUser(@Param('id') id: string): Promise<ResponseData<boolean>> {
         try {
             const userId = parseInt(id, 10);
