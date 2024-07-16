@@ -18,7 +18,7 @@ export class AuthController {
 
     }
 
-    @Get('users')
+    @Get('users') 
     async getUser(): Promise<ResponseData<Register[]>> {
         try {
             const users = await this.authService.getUser();
@@ -34,7 +34,7 @@ export class AuthController {
             const createdUser = await this.authService.createOrUpdateUser(createUserDto);
             return new ResponseData<RegisterDTO>(createdUser, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
-            return new ResponseData<RegisterDTO>(null, HttpStatus.ERROR, HttpMessage.ERROR);
+            return new ResponseData<RegisterDTO>(null, HttpStatus.ERROR, error.message);
         }
     }
 

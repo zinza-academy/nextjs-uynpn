@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { Register } from "src/model/user.model";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -30,7 +30,11 @@ export class AuthService {
             } else {
                 throw new NotFoundException(`Can't find user with ID ${id}`);
             }
-        } else {//thêm check email trùng 
+        } else {//thêm check email trùng  
+            const emailExists = await this.userRepository.findOneBy({ email: createUserDto.email });
+            if (emailExists) {
+                throw new ConflictException(`Email ${createUserDto.email} is already in use.`);
+            }
             user = this.userRepository.create(RegisterConverter.toEntity(createUserDto));
             user = await this.userRepository.save(user);
         }
