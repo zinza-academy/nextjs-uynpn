@@ -17,12 +17,12 @@ export class AuthController {
     ) { }
 
     @Get() 
-    async getUser(): Promise<ResponseData<Register[]>> {
+    async getUser(): Promise<ResponseData<RegisterDTO[]>> {
         try {
             const users = await this.authService.getUser();
-            return new ResponseData<Register[]>(users, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            return new ResponseData<RegisterDTO[]>(users, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
-            return new ResponseData<Register[]>([], HttpStatus.ERROR, HttpMessage.ERROR);
+            return new ResponseData<RegisterDTO[]>([], HttpStatus.ERROR, HttpMessage.ERROR);
         }
     }
 
@@ -51,7 +51,7 @@ export class AuthController {
             }
             return new ResponseData<RegisterDTO>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
-    }
+    } 
 
     @Delete(':id')
     async deleteUser(@Param('id') id: string): Promise<ResponseData<boolean>> {

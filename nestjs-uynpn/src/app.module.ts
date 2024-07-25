@@ -1,35 +1,39 @@
+import { Ward } from 'src/model/wards.model';
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { Register } from './model/user.model';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { DatabaseConfig } from './config/database.config';
+import { APP_FILTER } from '@nestjs/core'
+import { ImportLocationDataCommand } from './config/commands/import-location-data';
+import { ConsoleModule } from 'nestjs-console';
 import { AuthModule } from './modules/auth/auth.module';
-
+import { HttpExceptionFilter } from './common/filter/http-exception.filter';
+import { District } from './model/districts.model';
+import { Province } from './model/provinces.model';
 @Module({
   imports: [
-    AuthModule,
-
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env',
+      load: [DatabaseConfig],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get<string>('DATABASE_HOST'),
-        port: configService.get<number>('DATABASE_PORT'),
-        username: configService.get<string>('DATABASE_USER'),
-        password: configService.get<string>('DATABASE_PASSWORD'),
-        database: configService.get<string>('DATABASE_NAME'),
-        entities: [Register]
+      useFactory: (configService: ConfigService) => ({
+        ...configService.get('database'),
       }),
       inject: [ConfigService],
     }),
-
+    TypeOrmModule.forFeature([Province, District, Ward]),
+    ConsoleModule,
+    AuthModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+    ImportLocationDataCommand,
+  ],
 })
 export class AppModule {}

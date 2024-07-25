@@ -4,7 +4,6 @@ import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
 import { Register } from "src/model/user.model";
 import { APP_PIPE } from '@nestjs/core';
-
 @Module({
     imports: [
         TypeOrmModule.forFeature([Register]), 

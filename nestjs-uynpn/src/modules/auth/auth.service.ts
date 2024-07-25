@@ -16,9 +16,13 @@ export class AuthService {
 
     }
 
-    async getUser(): Promise<Register[]> {
-        return await this.userRepository.find()
-    }
+    async getUser(): Promise<RegisterDTO[]> {
+        const users = await this.userRepository.find({
+            relations: ['address', 'address.province', 'address.district', 'address.ward']
+        });
+    
+        return users.map(user => RegisterConverter.toDTO(user));
+    }    
 
     async createOrUpdateUser(createUserDto: RegisterDTO, id?: number): Promise<RegisterDTO> {
         let user;
