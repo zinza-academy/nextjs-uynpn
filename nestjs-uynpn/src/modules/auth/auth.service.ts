@@ -20,9 +20,9 @@ export class AuthService {
         const users = await this.userRepository.find({
             relations: ['address', 'address.province', 'address.district', 'address.ward']
         });
-    
+
         return users.map(user => RegisterConverter.toDTO(user));
-    }    
+    }
 
     async createOrUpdateUser(createUserDto: RegisterDTO, id?: number): Promise<RegisterDTO> {
         let user;
@@ -34,7 +34,7 @@ export class AuthService {
             } else {
                 throw new NotFoundException(`Can't find user with ID ${id}`);
             }
-        } else {//thêm check email trùng  
+        } else {//thêm check email trùng
             const emailExists = await this.userRepository.findOneBy({ email: createUserDto.email });
             if (emailExists) {
                 throw new ConflictException(`Email ${createUserDto.email} is already in use.`);
@@ -43,7 +43,7 @@ export class AuthService {
             user = await this.userRepository.save(user);
         }
         return RegisterConverter.toDTO(user);
-    } 
+    }
 
     async deleteUser(id: number): Promise<boolean> {
         const user = await this.userRepository.findOneBy({id})

@@ -53,9 +53,9 @@ export class ImportLocationDataCommand {
           where: { name: districtName, province: { id: currentProvince.id } },
         });
         if (!currentDistrict) {
-          currentDistrict = this.districtsRepository.create({ 
-            name: districtName, 
-            province: currentProvince 
+          currentDistrict = this.districtsRepository.create({
+            name: districtName,
+            province: currentProvince
           });
           await this.districtsRepository.save(currentDistrict);
         }
@@ -66,9 +66,9 @@ export class ImportLocationDataCommand {
           where: { name: wardName, district: { id: currentDistrict.id } },
         });
         if (!ward) {
-          ward = this.wardsRepository.create({ 
-            name: wardName, 
-            district: currentDistrict 
+          ward = this.wardsRepository.create({
+            name: wardName,
+            district: currentDistrict
           });
           await this.wardsRepository.save(ward);
         }

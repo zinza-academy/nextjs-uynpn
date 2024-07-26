@@ -16,14 +16,14 @@ export class District {
     code: string;
 
     @ManyToOne(() => Province, province => province.districts)
-    @JoinColumn({ name: 'province_id' }) 
+    @JoinColumn({ name: 'province_id' })
     province: Province;
 
     @OneToMany(() => Ward, ward => ward.district)
     wards: Ward[];
 
     @OneToMany(() => Address, address => address.district)
-    addresses: Address[]; 
+    addresses: Address[];
 
     constructor(
         name?: string,
@@ -37,4 +37,3 @@ export class District {
         this.province = province || null;
     }
 }
-

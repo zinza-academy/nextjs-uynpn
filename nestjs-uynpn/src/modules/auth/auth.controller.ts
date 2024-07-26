@@ -16,7 +16,7 @@ export class AuthController {
         private readonly authService: AuthService
     ) { }
 
-    @Get() 
+    @Get()
     async getUser(): Promise<ResponseData<RegisterDTO[]>> {
         try {
             const users = await this.authService.getUser();
@@ -51,7 +51,7 @@ export class AuthController {
             }
             return new ResponseData<RegisterDTO>(null, HttpStatus.ERROR, HttpMessage.ERROR);
         }
-    } 
+    }
 
     @Delete(':id')
     async deleteUser(@Param('id') id: string): Promise<ResponseData<boolean>> {
