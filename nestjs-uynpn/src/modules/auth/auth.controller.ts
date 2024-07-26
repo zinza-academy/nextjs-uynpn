@@ -16,13 +16,13 @@ export class AuthController {
         private readonly authService: AuthService
     ) { }
 
-    @Get() 
-    async getUser(): Promise<ResponseData<Register[]>> {
+    @Get()
+    async getUser(): Promise<ResponseData<RegisterDTO[]>> {
         try {
             const users = await this.authService.getUser();
-            return new ResponseData<Register[]>(users, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
+            return new ResponseData<RegisterDTO[]>(users, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
         } catch (error) {
-            return new ResponseData<Register[]>([], HttpStatus.ERROR, HttpMessage.ERROR);
+            return new ResponseData<RegisterDTO[]>([], HttpStatus.ERROR, HttpMessage.ERROR);
         }
     }
 
