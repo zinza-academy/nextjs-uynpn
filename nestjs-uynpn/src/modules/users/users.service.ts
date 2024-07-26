@@ -55,29 +55,6 @@ export class UserService {
         return true;
     }
 
-    async getUserById(id: number): Promise<RegisterDTO> {
-      const user = await this.userRepository.findOne({
-          where: { id },
-          relations: ['address', 'address.province', 'address.district', 'address.ward'],
-      });
-      if (!user) {
-          throw new NotFoundException(`Can't find user with ID ${id}`);
-      }
-      return RegisterConverter.toDTO(user);
-  }
-
-  // Tìm người dùng theo email
-  async getUserByEmail(email: string): Promise<RegisterDTO> {
-      const user = await this.userRepository.findOne({
-          where: { email },
-          relations: ['address', 'address.province', 'address.district', 'address.ward'],
-      });
-      if (!user) {
-          throw new NotFoundException(`Can't find user with email ${email}`);
-      }
-      return RegisterConverter.toDTO(user);
-  }
-
   async findByUsername(name: string): Promise<Register> {
     const user = await this.userRepository.findOne({
         where: { name },
