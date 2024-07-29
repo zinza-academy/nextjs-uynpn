@@ -16,7 +16,6 @@ export class UserService {
 
     }
 
-
     async getUser(): Promise<RegisterDTO[]> {
         const users = await this.userRepository.find({
             relations: ['address', 'address.province', 'address.district', 'address.ward']

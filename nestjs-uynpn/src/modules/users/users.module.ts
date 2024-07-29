@@ -5,7 +5,7 @@ import { UserService } from "./users.service";
 import { Register } from "src/model/user.model";
 import { APP_PIPE } from '@nestjs/core';
 @Module({
-    imports: [
+    imports: [ 
         TypeOrmModule.forFeature([Register]),
     ],
     controllers: [UserController],

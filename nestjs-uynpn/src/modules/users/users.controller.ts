@@ -5,11 +5,7 @@ import { HttpMessage } from 'src/global/globalEnum';
 import { HttpStatus } from 'src/global/globalEnum';
 import { Register } from 'src/model/user.model';
 import { RegisterDTO } from 'src/dto/register.dto';
-
-
-
 @Controller('v1/users')
-
 export class UserController {
 
     constructor(
