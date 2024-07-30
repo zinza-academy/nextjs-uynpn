@@ -1,69 +1,46 @@
-import { ResponseData } from 'src/global/globalClass';
+import { Controller, Post, Body, Req, UseGuards, Get, UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put, ValidationPipe } from "@nestjs/common";
+import { JwtAuthGuard } from './jwt-auth.guard';
+import { ResponseData } from 'src/global/globalClass';
 import { HttpMessage } from 'src/global/globalEnum';
 import { HttpStatus } from 'src/global/globalEnum';
-import { Register } from 'src/model/user.model';
-import { RegisterDTO } from 'src/dto/register.dto';
-
-
-
-@Controller('v1/users')
-
+@Controller('auth')
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
 
-    constructor(
-        private readonly authService: AuthService
-    ) { }
-
-    @Get()
-    async getUser(): Promise<ResponseData<RegisterDTO[]>> {
-        try {
-            const users = await this.authService.getUser();
-            return new ResponseData<RegisterDTO[]>(users, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
-        } catch (error) {
-            return new ResponseData<RegisterDTO[]>([], HttpStatus.ERROR, HttpMessage.ERROR);
-        }
+  @Post('login')
+  async login(@Body() body: { email: string; password: string }): Promise<ResponseData<any>> {
+    try {
+      const user = await this.authService.validateUser(body.email, body.password);
+      if (!user) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      const { access_token } = await this.authService.login(user);
+      return new ResponseData<any>(
+        { access_token },
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS
+      );
+    } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      } else {
+        throw new InternalServerErrorException(HttpMessage.ERROR);
+      }
     }
+  }
 
-    @Post()
-    async createUser(@Body(new ValidationPipe) createUserDto: RegisterDTO): Promise<ResponseData<RegisterDTO>> {
-        try {
-            const createdUser = await this.authService.createOrUpdateUser(createUserDto);
-            return new ResponseData<RegisterDTO>(createdUser, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
-        } catch (error) {
-            return new ResponseData<RegisterDTO>(null, HttpStatus.ERROR, error.message);
-        }
+  @Get('logout')
+  @UseGuards(JwtAuthGuard)
+  logout(@Req() req): ResponseData<null> {
+    try {
+      return new ResponseData<null>(
+        null,
+        HttpStatus.SUCCESS,
+        HttpMessage.SUCCESS
+      );
+    } catch (error) {
+      throw new InternalServerErrorException(HttpMessage.ERROR);
     }
-
-    @Put(':id')
-    async updateUser(
-        @Param('id') id: string,
-        @Body(new ValidationPipe) updateUserDto: RegisterDTO
-    ): Promise<ResponseData<RegisterDTO>> {
-        try {
-            const userId = parseInt(id, 10);
-            const updatedUser = await this.authService.createOrUpdateUser(updateUserDto, userId);
-            return new ResponseData<RegisterDTO>(updatedUser, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
-        } catch (error) {
-            if (error instanceof NotFoundException) {
-                return new ResponseData<RegisterDTO>(null, HttpStatus.NOT_FOUND, error.message);
-            }
-            return new ResponseData<RegisterDTO>(null, HttpStatus.ERROR, HttpMessage.ERROR);
-        }
-    }
-
-    @Delete(':id')
-    async deleteUser(@Param('id') id: string): Promise<ResponseData<boolean>> {
-        try {
-            const userId = parseInt(id, 10);
-            const deleted = await this.authService.deleteUser(userId);
-            return new ResponseData<boolean>(deleted, HttpStatus.SUCCESS, HttpMessage.SUCCESS);
-        } catch (error) {
-            if (error instanceof NotFoundException) {
-                return new ResponseData<boolean>(false, HttpStatus.NOT_FOUND, error.message);
-            }
-            return new ResponseData<boolean>(false, HttpStatus.ERROR, HttpMessage.ERROR);
-        }
-    }
+  }
 }

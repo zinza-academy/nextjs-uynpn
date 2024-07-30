@@ -11,3 +11,4 @@ export class ResponseData<D> {
         return this;
     }
 }
+ 

@@ -6,7 +6,7 @@ import { DatabaseConfig } from './config/database.config';
 import { APP_FILTER } from '@nestjs/core'
 import { ImportLocationDataCommand } from './config/commands/import-location-data';
 import { ConsoleModule } from 'nestjs-console';
-import { AuthModule } from './modules/auth/auth.module';
+import { UserModule } from './modules/users/users.module';
 import { HttpExceptionFilter } from './common/filter/http-exception.filter';
 import { District } from './model/districts.model';
 import { Province } from './model/provinces.model';
@@ -26,7 +26,7 @@ import { Province } from './model/provinces.model';
     }),
     TypeOrmModule.forFeature([Province, District, Ward]),
     ConsoleModule,
-    AuthModule,
+    UserModule,
   ],
   providers: [
     {
